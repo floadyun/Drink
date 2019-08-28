@@ -35,20 +35,20 @@ public class OkHttpManager {
         });
         loggingInterceptor.setLevel(level);
         /*****调试****/
-        mOkHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(30, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS)
-                .addNetworkInterceptor(new StethoInterceptor())
-                .addInterceptor(loggingInterceptor)
-                .addInterceptor(new RequestInterceptor())
-                .build();
-        /****正式**/
 //        mOkHttpClient = new OkHttpClient.Builder()
 //                .connectTimeout(10, TimeUnit.SECONDS)
 //                .writeTimeout(30, TimeUnit.SECONDS)
+//                .readTimeout(30, TimeUnit.SECONDS)
+//                .addNetworkInterceptor(new StethoInterceptor())
+//                .addInterceptor(loggingInterceptor)
 //                .addInterceptor(new RequestInterceptor())
-//                .readTimeout(30, TimeUnit.SECONDS).build();
+//                .build();
+        /****正式**/
+        mOkHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .addInterceptor(new RequestInterceptor())
+                .readTimeout(30, TimeUnit.SECONDS).build();
         return mOkHttpClient;
     }
     private static class RequestInterceptor implements Interceptor {
@@ -60,8 +60,6 @@ public class OkHttpManager {
                     .addHeader("Content-Length","0")
                     .addHeader("Connection", "keep-alive")
                     .addHeader("Accept","application/json")
-                    .addHeader("Agent","Android")
-                    .addHeader("Version", "1.4.0")
                     .build();
             return chain.proceed(request);
         }

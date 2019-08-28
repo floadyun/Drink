@@ -2,12 +2,12 @@ package com.base.lib.http;
 
 public class ApiHelper {
     //正式环境
-//    public static final String BASE_URL = "http://business.xitouwang.com/";
+    public static final String BASE_URL = "http://139.9.213.158:8081/";
 //    测试域名
-    public static final String BASE_URL = "http://business.xitouwang.com:8888/";
+//    public static final String BASE_URL = "http://business.xitouwang.com:8888/";
     //测试域名
 //    public static final String BASE_URL = "http://192.168.0.188:8088/";
-    public static final String API_URL =BASE_URL+"api/";
+    public static final String API_URL =BASE_URL;
     //更新链接
     public static String UPDATE_URL = BASE_URL+"app/getInfo";
     /**
