@@ -57,9 +57,9 @@ public class OkHttpManager {
             Request request = chain.request()
                     .newBuilder()
                     .addHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
-                    .addHeader("Content-Length","0")
-                    .addHeader("Connection", "keep-alive")
-                    .addHeader("Accept","application/json")
+//                    .addHeader("Content-Length","0")
+//                    .addHeader("Connection", "keep-alive")
+//                    .addHeader("Accept","application/json")
                     .build();
             return chain.proceed(request);
         }
