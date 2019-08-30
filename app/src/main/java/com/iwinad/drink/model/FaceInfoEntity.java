@@ -8,4 +8,13 @@ import com.base.lib.http.base.BaseEntity;
  * @description:
  */
 public class FaceInfoEntity extends BaseEntity {
+
+    /**
+     * 姓名 : 未知
+     * 性别 : 未知
+     * 部门 : 未知
+     */
+    public String 姓名;
+    public String 性别;
+    public String 部门;
 }

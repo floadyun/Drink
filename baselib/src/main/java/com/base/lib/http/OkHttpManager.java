@@ -35,20 +35,20 @@ public class OkHttpManager {
         });
         loggingInterceptor.setLevel(level);
         /*****调试****/
-//        mOkHttpClient = new OkHttpClient.Builder()
-//                .connectTimeout(10, TimeUnit.SECONDS)
-//                .writeTimeout(30, TimeUnit.SECONDS)
-//                .readTimeout(30, TimeUnit.SECONDS)
-//                .addNetworkInterceptor(new StethoInterceptor())
-//                .addInterceptor(loggingInterceptor)
-//                .addInterceptor(new RequestInterceptor())
-//                .build();
-        /****正式**/
         mOkHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .addNetworkInterceptor(new StethoInterceptor())
+                .addInterceptor(loggingInterceptor)
                 .addInterceptor(new RequestInterceptor())
-                .readTimeout(30, TimeUnit.SECONDS).build();
+                .build();
+        /****正式**/
+//        mOkHttpClient = new OkHttpClient.Builder()
+//                .connectTimeout(10, TimeUnit.SECONDS)
+//                .writeTimeout(30, TimeUnit.SECONDS)
+//                .addInterceptor(new RequestInterceptor())
+//                .readTimeout(30, TimeUnit.SECONDS).build();
         return mOkHttpClient;
     }
     private static class RequestInterceptor implements Interceptor {
@@ -56,7 +56,7 @@ public class OkHttpManager {
         public Response intercept(Interceptor.Chain chain) throws IOException {
             Request request = chain.request()
                     .newBuilder()
-                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                    .addHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
                     .addHeader("Content-Length","0")
                     .addHeader("Connection", "keep-alive")
                     .addHeader("Accept","application/json")
