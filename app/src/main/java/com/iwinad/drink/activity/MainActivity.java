@@ -1,4 +1,4 @@
-package com.iwinad.drink;
+package com.iwinad.drink.activity;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -15,6 +15,7 @@ import com.base.lib.http.ApiHelper;
 import com.base.lib.http.base.BaseObserver;
 import com.base.lib.util.FileUtil;
 import com.base.lib.util.ImageUtil;
+import com.iwinad.drink.R;
 import com.iwinad.drink.api.ApiLoader;
 import com.iwinad.drink.model.FaceInfoEntity;
 
@@ -33,6 +34,9 @@ public class MainActivity extends AppBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent intent = new Intent(this,FaceRecognitionActivity.class);
+        startActivity(intent);
     }
     /**
      * 拍照
