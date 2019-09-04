@@ -50,17 +50,7 @@ public abstract class BaseObserver<T> implements Observer<T>{
     @Override
     public void onNext(T value) {
         if(value!=null){
-            if(value instanceof BaseEntity){
-                BaseEntity baseEntity = (BaseEntity) value;
-                if(((BaseEntity) value).code==null)return;
-                if(baseEntity.code.equals(ApiHelper.SUCCESS_CODE)){
-                    onSuccess(value);
-                }else {
-                    ToastUtil.showToast(baseActivity,baseEntity.msg);
-                }
-            }else{
-                ToastUtil.showToast(baseActivity,"数据解析失败");
-            }
+            onSuccess(value);
         }
     }
     @Override

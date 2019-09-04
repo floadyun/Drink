@@ -26,7 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.FaceRecognitionActivity" android:screenOrientation="landscape"/>
+        <activity android:name=".activity.FaceRecognitionActivity"/>
         <activity android:name=".activity.SelectDrinkActivity" android:screenOrientation="landscape"/>
         <activity android:name=".activity.FacePayActivity" android:screenOrientation="landscape"/>
     </application>

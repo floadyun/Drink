@@ -89,7 +89,6 @@ public class ImageUtil {
             return false;
         }
     }
-
     /**
      * base64转为bitmap
      *
@@ -100,5 +99,4 @@ public class ImageUtil {
         byte[] bytes = Base64.decode(base64Data, Base64.NO_WRAP);
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
-
 }

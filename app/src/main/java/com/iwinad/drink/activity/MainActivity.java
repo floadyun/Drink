@@ -1,6 +1,7 @@
 package com.iwinad.drink.activity;
 
 import android.content.Intent;
+import android.media.FaceDetector;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -18,6 +19,10 @@ import com.base.lib.util.ImageUtil;
 import com.iwinad.drink.R;
 import com.iwinad.drink.api.ApiLoader;
 import com.iwinad.drink.model.FaceInfoEntity;
+import com.iwinad.drink.model.FaceType;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +40,13 @@ public class MainActivity extends AppBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        EventBus.getDefault().register(this);
+    }
+    /**
+     * 跳转至人脸识别
+     * @param view
+     */
+    public void gotoFaceRecognition(View view){
         Intent intent = new Intent(this,FaceRecognitionActivity.class);
         startActivity(intent);
     }
@@ -89,8 +101,26 @@ public class MainActivity extends AppBaseActivity {
         ApiLoader.uploadImage(ImageUtil.imageToBase64(imagePath), new BaseObserver<FaceInfoEntity>(this) {
             @Override
             public void onSuccess(FaceInfoEntity value) {
-
+                gotoSelectDrink(value);
             }
         });
+    }
+    private void gotoSelectDrink(FaceInfoEntity faceInfoEntity){
+        Intent intent = new Intent(this,SelectDrinkActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("faceInfo",faceInfoEntity);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+    @Subscribe
+    public void onEventMainThread(FaceType faceType){
+        if(faceType.type== FaceType.FACE_TYPE_1){
+            uploadImage(faceType.imagePath);
+        }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }
