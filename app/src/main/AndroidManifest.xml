@@ -19,14 +19,14 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"/>
         </provider>
-        <activity android:name=".activity.MainActivity" android:screenOrientation="landscape">
+        <activity android:name=".activity.MainActivity" android:screenOrientation="landscape" android:theme="@style/NoTitleFullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.FaceRecognitionActivity"/>
+        <activity android:name=".activity.FaceRecognitionActivity" android:screenOrientation="landscape" android:theme="@style/NoTitleFullscreen"/>
         <activity android:name=".activity.SelectDrinkActivity" android:screenOrientation="landscape"/>
         <activity android:name=".activity.FacePayActivity" android:screenOrientation="landscape"/>
     </application>
