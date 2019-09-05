@@ -16,6 +16,7 @@ import com.base.lib.http.ApiHelper;
 import com.base.lib.http.base.BaseObserver;
 import com.base.lib.util.FileUtil;
 import com.base.lib.util.ImageUtil;
+import com.iwinad.drink.Consts;
 import com.iwinad.drink.R;
 import com.iwinad.drink.api.ApiLoader;
 import com.iwinad.drink.model.FaceInfoEntity;
@@ -26,6 +27,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class MainActivity extends AppBaseActivity {
 
