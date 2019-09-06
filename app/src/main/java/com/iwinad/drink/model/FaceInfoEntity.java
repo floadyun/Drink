@@ -22,4 +22,5 @@ public class FaceInfoEntity implements Serializable {
     public String 部门;
     public String 性格;
     public String 兴趣;
+    public int faceImage;
 }

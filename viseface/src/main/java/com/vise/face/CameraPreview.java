@@ -49,10 +49,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         DisplayMetrics metrics = new DisplayMetrics();
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(metrics);
-//        mCameraWidth = metrics.widthPixels;
-//        mCameraHeight = metrics.heightPixels;
-        mCameraWidth = 800;
-        mCameraHeight = 480;
+        mCameraWidth = metrics.widthPixels;
+        mCameraHeight = metrics.heightPixels;
     }
 
     public void surfaceCreated(SurfaceHolder holder) {
@@ -66,7 +64,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
     }
-
     /**
      * 打开相机
      */
@@ -74,7 +71,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         if (null != mCamera) {
             return;
         }
-
         if (!FaceUtil.checkCameraPermission(getContext())) {
             ViseLog.i("摄像头权限未打开，请打开后再试");
             if (mCheckListener != null) {
@@ -82,16 +78,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             }
             return;
         }
-
         // 只有一个摄相头，打开后置
         if (Camera.getNumberOfCameras() == 1) {
             mCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
         }
-
         if (mFaceDetector != null) {
             mFaceDetector.setCameraId(mCameraId);
         }
-
         try {
             mCamera = Camera.open(mCameraId);
             // setParameters 针对部分手机通过Camera.open()拿到的Camera对象不为null
@@ -104,31 +97,27 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             }
         } catch (Exception e) {
             e.printStackTrace();
-
             //回调权限判定结果
             if (mCheckListener != null) {
                 mCheckListener.checkPermission(false);
             }
-
             //关闭相机
             closeCamera();
             return;
         }
-
         if (mCamera == null || mHolder == null || mHolder.getSurface() == null) {
             return;
         }
-
         //回调权限判定结果
         if (mCheckListener != null) {
             mCheckListener.checkPermission(true);
         }
-
         long pixels = 0;
         try {
             //获取最大宽高，得出最大支持像素
             Camera.Parameters parameters = mCamera.getParameters();
             Camera.Size maxPictureSize = FaceUtil.findMaxCameraSize(parameters.getSupportedPictureSizes());
+           // Camera.Size cameraSize = FaceUtil.getOptimalPreviewSize(parameters.getSupportedPictureSizes(),mCameraWidth,mCameraHeight);
             if (maxPictureSize != null) {
                 pixels = maxPictureSize.width * maxPictureSize.height;
             }
@@ -143,7 +132,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                     return;
                 }
             }
-
             //设置预览回调
             mCamera.setPreviewCallback(new Camera.PreviewCallback() {
 
@@ -176,7 +164,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             ViseLog.d("Error starting camera preview: " + e.getMessage());
         }
     }
-
     /**
      * 关闭相机
      */
@@ -195,7 +182,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             }
         }
     }
-
     /**
      * 释放资源
      */

@@ -19,6 +19,13 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"/>
         </provider>
+        <!-- /*自动布局的参数的设计高宽*/ -->
+        <meta-data
+            android:name="design_width"
+            android:value="1024"/>
+        <meta-data
+            android:name="design_height"
+            android:value="600"/>
         <activity android:name=".activity.MainActivity" android:screenOrientation="landscape" android:theme="@style/NoTitleFullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,9 +33,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.FaceRecognitionActivity" android:screenOrientation="landscape" android:theme="@style/NoTitleFullscreen"/>
-        <activity android:name=".activity.SelectDrinkActivity" android:screenOrientation="landscape"/>
-        <activity android:name=".activity.FacePayActivity" android:screenOrientation="landscape"/>
+        <activity android:name=".activity.FaceRecognitionActivity" android:theme="@style/NoTitleFullscreen"/>
+        <activity android:name=".activity.SelectDrinkActivity" android:screenOrientation="landscape" android:theme="@style/NoTitleFullscreen"/>
+        <activity android:name=".activity.FacePayActivity" android:screenOrientation="landscape" android:theme="@style/NoTitleFullscreen"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CAMERA"/>

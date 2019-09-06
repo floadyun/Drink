@@ -49,7 +49,8 @@ public class MainActivity extends AppBaseActivity {
      * @param view
      */
     public void gotoFaceRecognition(View view){
-        Intent intent = new Intent(this,FaceRecognitionActivity.class);
+        Intent intent = new Intent(this,SelectDrinkActivity.class);
+        intent.putExtra(Consts.FACE_TYPE,0);
         startActivity(intent);
     }
     /**
@@ -117,7 +118,7 @@ public class MainActivity extends AppBaseActivity {
     @Subscribe
     public void onEventMainThread(FaceType faceType){
         if(faceType.type== FaceType.FACE_TYPE_1){
-            uploadImage(faceType.imagePath);
+     //       uploadImage(faceType.imagePath);
         }
     }
     @Override

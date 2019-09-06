@@ -1,17 +1,31 @@
 package com.iwinad.drink.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
+import com.base.lib.baseadapter.BaseQuickAdapter;
+import com.base.lib.baseadapter.BaseViewHolder;
 import com.base.lib.baseui.AppBaseActivity;
+import com.base.lib.discretescrollview.DiscreteScrollView;
+import com.base.lib.discretescrollview.InfiniteScrollAdapter;
+import com.base.lib.discretescrollview.transform.Pivot;
+import com.base.lib.discretescrollview.transform.ScaleTransformer;
+import com.iwinad.drink.Consts;
 import com.iwinad.drink.R;
 import com.iwinad.drink.seriaport.DataSerialPort;
 import com.iwinad.drink.seriaport.ICommonResult;
 import com.iwinad.drink.seriaport.MixDrinkInfo;
 import com.iwinad.drink.seriaport.SerialPortResponse;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -21,7 +35,16 @@ import butterknife.ButterKnife;
  */
 public class SelectDrinkActivity extends AppBaseActivity {
 
+    @BindView(R.id.select_drink_view)
+    DiscreteScrollView scrollView;
+
     private DataSerialPort dataSerialPort = new DataSerialPort();
+
+    private BaseQuickAdapter quickAdapter;
+
+    private Integer[] imageIds = new Integer[]{R.drawable.drink_green,R.drawable.drink_smile,R.drawable.drink_russia};
+
+    private boolean isDrinking;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,7 +52,33 @@ public class SelectDrinkActivity extends AppBaseActivity {
         setContentView(R.layout.activity_select_drink_layout);
         ButterKnife.bind(this);
 
-        dataSerialPort.init();
+      //  dataSerialPort.init();
+
+        initScrollView();
+    }
+    private void initScrollView(){
+        quickAdapter = new BaseQuickAdapter<Integer, BaseViewHolder>(R.layout.item_select_drink_layout){
+            @Override
+            protected void convert(BaseViewHolder helper,Integer item, int position) {
+                helper.setImageResource(R.id.item_drink_image,item);
+            }
+        };
+        scrollView.setItemTransformer(new ScaleTransformer.Builder()
+                .setMaxScale(1.09f)
+                .setMinScale(0.75f)
+                .setPivotX(Pivot.X.CENTER) //CENTER is a default one
+                .setPivotY(Pivot.Y.CENTER) //CENTER is a default one
+                .build());
+        scrollView.setAdapter(quickAdapter);
+        quickAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if(!isDrinking){
+                    startDrink(position);
+                }
+            }
+        });
+        quickAdapter.setNewData(Arrays.asList(imageIds));
     }
     private void startDrink(int type){
         MixDrinkInfo mixDrinkInfo = new MixDrinkInfo();
@@ -74,13 +123,24 @@ public class SelectDrinkActivity extends AppBaseActivity {
                         || data.errorCode == SerialPortResponse.ERR_FAILED) {
                     Toast.makeText(SelectDrinkActivity.this, "完成", Toast.LENGTH_SHORT).show();
                     Log.d("demo","完成");
+                    isDrinking = false;
                 } else if (data.errorCode == SerialPortResponse.ERR_WAITING) {
                     Log.d("demo","等等：" + data.timeLeft);
                 } else if (data.errorCode == SerialPortResponse.ERR_START) {
                     Log.d("demo","开始");
+                    isDrinking = true;
                     Toast.makeText(SelectDrinkActivity.this, "开始", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    /**
+     * 跳转至人脸识别
+     */
+    private void gotoFaceRecognition(){
+        Intent intent = new Intent(this,FaceRecognitionActivity.class);
+        intent.putExtra(Consts.FACE_TYPE,1);
+        startActivity(intent);
     }
 }

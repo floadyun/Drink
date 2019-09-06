@@ -1,6 +1,7 @@
 package com.iwinad.drink.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -18,7 +19,9 @@ import com.base.lib.baseui.AppBaseActivity;
 import com.base.lib.http.okhttputils.utils.ImageUtils;
 import com.base.lib.util.DeviceUtils;
 import com.base.lib.util.ImageUtil;
+import com.iwinad.drink.Consts;
 import com.iwinad.drink.R;
+import com.iwinad.drink.model.FaceType;
 import com.vise.face.CameraPreview;
 import com.vise.face.DetectorData;
 import com.vise.face.DetectorProxy;
@@ -52,6 +55,8 @@ public class FaceRecognitionActivity extends AppBaseActivity {
     private DetectorProxy mDetectorProxy;
     private DetectorData mDetectorData;
 
+    private int faceType;
+
     private ICameraCheckListener mCameraCheckListener = new ICameraCheckListener() {
         @Override
         public void checkPermission(boolean isAllow) {
@@ -76,11 +81,10 @@ public class FaceRecognitionActivity extends AppBaseActivity {
         public void onDetectorData(DetectorData detectorData) {
             mDetectorData = detectorData;
             if(mDetectorData.getLightIntensity()>150){
-                takePicture();
+            //    takePicture();
             }
         }
     };
-
     private Handler mHandler;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,6 +95,8 @@ public class FaceRecognitionActivity extends AppBaseActivity {
         mFace_detector_face.getHolder().setFormat(PixelFormat.TRANSLUCENT);
         initFaceDetector();
         mHandler = new Handler();
+
+        faceType = getIntent().getIntExtra(Consts.FACE_TYPE,0);
     }
     private void initFaceDetector(){
         //创建代理类，必须传入相机预览界面
@@ -149,7 +155,7 @@ public class FaceRecognitionActivity extends AppBaseActivity {
         ViseLog.i("save picture start!");
         Bitmap bitmap = getImage(data, rect, 150, 200, pictureFile, avatarFile);
         ViseLog.i("save picture complete!");
-        EventBus.getDefault().post(avatarFile);
+        gotoPayResult(avatarFile.getAbsolutePath());
         if (bitmap != null) {
             bitmap.recycle();
             bitmap = null;
@@ -317,6 +323,17 @@ public class FaceRecognitionActivity extends AppBaseActivity {
 
         return resizedBitmap;
     }
+
+    private void gotoPayResult(String imagePath){
+        if(faceType==0){
+            EventBus.getDefault().post(new FaceType(faceType,imagePath));
+        }else {
+            Intent intent = new Intent();
+            intent.putExtra(Consts.FACE_IAMGE_PATH,imagePath);
+            startActivity(intent);
+        }
+    }
+
     @Override
     protected void onStart() {
         super.onStart();

@@ -111,7 +111,43 @@ public class FaceUtil {
         });
         return supportedResolutions.get(0);
     }
-
+    /**
+     * 解决预览变形问题
+     * @return
+     */
+    public static Camera.Size getOptimalPreviewSize(List<Camera.Size> preSizeList, int surfaceWidth, int surfaceHeight) {
+        int ReqTmpWidth;
+        int ReqTmpHeight;
+        boolean mIsPortrait = true;
+        // 当屏幕为垂直的时候需要把宽高值进行调换，保证宽大于高
+        if (mIsPortrait) {
+            ReqTmpWidth = surfaceHeight;
+            ReqTmpHeight = surfaceWidth;
+        } else {
+            ReqTmpWidth = surfaceWidth;
+            ReqTmpHeight = surfaceHeight;
+        }
+        //先查找preview中是否存在与surfaceview相同宽高的尺寸
+        for(Camera.Size size : preSizeList){
+            if((size.width == ReqTmpWidth) && (size.height == ReqTmpHeight)){
+                return size;
+            }
+        }
+        // 得到与传入的宽高比最接近的size
+        float reqRatio = ((float) ReqTmpWidth) / ReqTmpHeight;
+        float curRatio, deltaRatio;
+        float deltaRatioMin = Float.MAX_VALUE;
+        Camera.Size retSize = null;
+        for (Camera.Size size : preSizeList) {
+            curRatio = ((float) size.width) / size.height;
+            deltaRatio = Math.abs(reqRatio - curRatio);
+            if (deltaRatio < deltaRatioMin) {
+                deltaRatioMin = deltaRatio;
+                retSize = size;
+            }
+        }
+        return retSize;
+    }
     /**
      * 找出最适合的分辨率
      *
