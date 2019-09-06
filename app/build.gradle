@@ -35,5 +35,5 @@ dependencies {
     implementation 'com.jakewharton:butterknife:9.0.0-rc2'
     annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc2'
     //人脸检测
-    implementation 'com.vise.xiaoyaoyou:viseface:1.1.0'
+    api project(':viseface')
 }
