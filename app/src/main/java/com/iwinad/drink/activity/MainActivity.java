@@ -1,15 +1,20 @@
 package com.iwinad.drink.activity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Intent;
-import android.media.FaceDetector;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.base.lib.baseui.AppBaseActivity;
 import com.base.lib.http.ApiHelper;
@@ -21,13 +26,13 @@ import com.iwinad.drink.R;
 import com.iwinad.drink.api.ApiLoader;
 import com.iwinad.drink.model.FaceInfoEntity;
 import com.iwinad.drink.model.FaceType;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import static android.animation.ValueAnimator.*;
 
 public class MainActivity extends AppBaseActivity {
 
@@ -37,53 +42,65 @@ public class MainActivity extends AppBaseActivity {
 
     private static final int TAKE_PHOTO = 1;
 
+    private int[] viewIds = new int[]{R.id.main_menu_1,R.id.main_menu_2,R.id.main_menu_3,
+            R.id.main_menu_4,R.id.main_menu_5,R.id.main_menu_6,R.id.main_menu_7};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         EventBus.getDefault().register(this);
+
+
+        for (int i=0;i<viewIds.length;i++){
+            startViewAnimation(viewIds[i]);
+        }
+    }
+
+    private void startViewAnimation(int viewId){
+        View animView = findViewById(viewId);
+        AnimatorSet animatorSet = new AnimatorSet();
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(animView,"ScaleX", 0.9f);
+        scaleX.setDuration(1000);
+        scaleX.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                ObjectAnimator scaleX = ObjectAnimator.ofFloat(animView,"ScaleX", 1.0f);
+                scaleX.setDuration(1000);
+                scaleX.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        startViewAnimation(viewId);
+                    }
+                });
+                scaleX.start();
+            }
+        });
+        scaleX.start();
+
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(animView,"ScaleY", 0.9f);
+        scaleY.setDuration(1000);
+        scaleY.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                ObjectAnimator scaleY = ObjectAnimator.ofFloat(animView,"ScaleY", 1.0f);
+                scaleY.setDuration(1000);
+                scaleY.start();
+            }
+        });
+        scaleY.start();
     }
     /**
-     * 跳转至人脸识别
+     * 跳转至人脸表情识别
      * @param view
      */
     public void gotoFaceRecognition(View view){
-        Intent intent = new Intent(this,SelectDrinkActivity.class);
-        intent.putExtra(Consts.FACE_TYPE,0);
+        Intent intent = new Intent(this,IdentifyMoodActivity.class);
         startActivity(intent);
-    }
-    /**
-     * 拍照
-     * @param view
-     */
-    public void captureImage(View view){
-        imagePath = Environment.getExternalStorageDirectory()+"/upload/"+System.currentTimeMillis()+".png";
-        FileUtil.createfile(imagePath);
-        //储存拍照图片file
-        File outputImage = new File(imagePath);
-
-        if (outputImage.exists()){
-            outputImage.delete();
-        }
-        try {
-            outputImage.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //
-        if (Build.VERSION.SDK_INT>=24){
-            //7.0以上新增的方法 共享文件 FileProvider是一种特殊的内容提供者
-            // 第二个参数为对应filepaths.xml中provider（内容提供者的）的name
-            imgUri = FileProvider
-                    .getUriForFile(this,"com.iwinad.drink.fileprovider",outputImage);
-        }else {
-            imgUri = Uri.fromFile(outputImage);
-        }
-        //启动相机
-        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-        intent.putExtra(MediaStore.EXTRA_OUTPUT,imgUri);
-        startActivityForResult(intent,TAKE_PHOTO);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

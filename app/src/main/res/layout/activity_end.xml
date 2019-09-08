@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.base.lib.autolayout.AutoRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_select_drink">
+    <com.base.lib.autolayout.AutoRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="28px"
+        android:layout_marginTop="30px"
+        android:paddingLeft="30px"
+        android:paddingRight="30px">
+        <View
+            android:layout_width="777px"
+            android:layout_height="13px"
+            android:background="@drawable/top_line_image"
+            android:layout_centerVertical="true"/>
+        <View
+            android:layout_width="125px"
+            android:layout_height="28px"
+            android:background="@drawable/ic_huawei_logo"
+            android:layout_alignParentRight="true"/>
+    </com.base.lib.autolayout.AutoRelativeLayout>
+    <View
+        android:layout_width="625px"
+        android:layout_height="349px"
+        android:layout_marginLeft="264px"
+        android:layout_marginTop="162px"
+        android:background="@drawable/bg_transport"/>
+    <View
+        android:layout_width="111px"
+        android:layout_height="97px"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="30px"
+        android:layout_marginRight="30px"
+        android:background="@drawable/ic_right_bottom"/>
+</com.base.lib.autolayout.AutoRelativeLayout>

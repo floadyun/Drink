@@ -81,7 +81,7 @@ public class FaceRecognitionActivity extends AppBaseActivity {
         public void onDetectorData(DetectorData detectorData) {
             mDetectorData = detectorData;
             if(mDetectorData.getLightIntensity()>150){
-            //    takePicture();
+                takePicture();
             }
         }
     };
@@ -89,7 +89,7 @@ public class FaceRecognitionActivity extends AppBaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_face_recognition_layout);
+        setContentView(R.layout.activity_face_recognition);
         ButterKnife.bind(this);
         mFace_detector_face.setZOrderOnTop(true);
         mFace_detector_face.getHolder().setFormat(PixelFormat.TRANSLUCENT);
@@ -328,7 +328,7 @@ public class FaceRecognitionActivity extends AppBaseActivity {
         if(faceType==0){
             EventBus.getDefault().post(new FaceType(faceType,imagePath));
         }else {
-            Intent intent = new Intent();
+            Intent intent = new Intent(this,FacePayActivity.class);
             intent.putExtra(Consts.FACE_IAMGE_PATH,imagePath);
             startActivity(intent);
         }

@@ -63,6 +63,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
+
     }
     /**
      * 打开相机
