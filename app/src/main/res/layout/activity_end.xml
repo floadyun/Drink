@@ -22,20 +22,32 @@
     </com.base.lib.autolayout.AutoRelativeLayout>
     <com.base.lib.autolayout.AutoRelativeLayout
         android:layout_width="263px"
-        android:layout_height="483px"
+        android:layout_height="475px"
+        android:layout_marginTop="105px"
         android:background="@drawable/bg_end_menu">
         <View
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/end_menu_1"/>
+            android:id="@+id/end_menu_1"
+            android:layout_width="94px"
+            android:layout_height="94px"
+            android:background="@drawable/end_menu_1"
+            android:layout_marginLeft="40px"
+            android:layout_marginTop="60px"/>
         <View
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/end_menu_2"/>
+            android:id="@+id/end_menu_2"
+            android:layout_width="94px"
+            android:layout_height="94px"
+            android:background="@drawable/end_menu_2"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="85px"/>
         <View
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/end_menu_3"/>
+            android:id="@+id/end_menu_3"
+            android:layout_width="94px"
+            android:layout_height="94px"
+            android:background="@drawable/end_menu_3"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="15px"
+            android:layout_marginBottom="45px"/>
     </com.base.lib.autolayout.AutoRelativeLayout>
     <View
         android:layout_width="625px"

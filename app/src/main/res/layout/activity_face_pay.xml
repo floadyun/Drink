@@ -53,7 +53,7 @@
         android:layout_marginRight="150px">
         <View
             android:id="@+id/person_info_view"
-            android:layout_width="wrap_content"
+            android:layout_width="257px"
             android:layout_height="264px"
             android:background="@drawable/face_image_1"/>
         <View
