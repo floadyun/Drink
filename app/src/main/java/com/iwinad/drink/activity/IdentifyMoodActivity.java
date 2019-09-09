@@ -30,8 +30,8 @@ import butterknife.ButterKnife;
  * @description:个人中心
  */
 public class IdentifyMoodActivity extends AppBaseActivity {
-//    @BindView(R.id.face_detector_preview)
-//    CameraPreview mFace_detector_preview;
+    @BindView(R.id.face_detector_preview)
+    CameraPreview mFace_detector_preview;
     private DetectorProxy mDetectorProxy;
     private IDataListener mDataListener = new IDataListener() {
         @Override
@@ -48,30 +48,30 @@ public class IdentifyMoodActivity extends AppBaseActivity {
         setContentView(R.layout.activity_identify_mood);
         ButterKnife.bind(this);
 
-      //  initFaceDetector();
+        initFaceDetector();
 
         handler = new Handler();
 
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                gotoSelectDrink();
+//                gotoSelectDrink();
             }
         },2000);
     }
     private void initFaceDetector(){
         //创建代理类，必须传入相机预览界面
-//        mDetectorProxy = new DetectorProxy.Builder(mFace_detector_preview)
-//                .setMinCameraPixels(3000000)
-//                .setDataListener(mDataListener)
-//                //设置预览相机的相机ID
-//                .setCameraId(Camera.CameraInfo.CAMERA_FACING_FRONT)
-//                .setDrawFaceRect(true)
-//                //设置人脸识别框是否为完整矩形
-//                .setFaceIsRect(false)
-//                //设置人脸识别框的RGB颜色
-//                .setFaceRectColor(Color.rgb(255, 203, 15))
-//                .build();
+        mDetectorProxy = new DetectorProxy.Builder(mFace_detector_preview)
+                .setMinCameraPixels(3000000)
+                .setDataListener(mDataListener)
+                //设置预览相机的相机ID
+                .setCameraId(Camera.CameraInfo.CAMERA_FACING_FRONT)
+                .setDrawFaceRect(true)
+                //设置人脸识别框是否为完整矩形
+                .setFaceIsRect(false)
+                //设置人脸识别框的RGB颜色
+                .setFaceRectColor(Color.rgb(255, 203, 15))
+                .build();
     }
     /**
      * 跳转至选酒

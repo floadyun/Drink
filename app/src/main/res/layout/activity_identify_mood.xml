@@ -3,15 +3,21 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_main">
-    <!--<com.base.lib.autolayout.AutoFrameLayout-->
-        <!--android:layout_width="344px"-->
-        <!--android:layout_height="439px">-->
-        <!--&lt;!&ndash;相机预览界面，必须设置&ndash;&gt;-->
-        <!--<com.vise.face.CameraPreview-->
-            <!--android:id="@+id/face_detector_preview"-->
-            <!--android:layout_width="344px"-->
-            <!--android:layout_height="439px"/>-->
-    <!--</com.base.lib.autolayout.AutoFrameLayout>-->
+    <com.base.lib.autolayout.AutoFrameLayout
+        android:layout_width="344px"
+        android:layout_height="439px"
+        android:layout_marginTop="95px"
+        android:layout_marginLeft="112px">
+        <!--相机预览界面，必须设置-->
+        <com.vise.face.CameraPreview
+            android:id="@+id/face_detector_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_face_identity"/>
+    </com.base.lib.autolayout.AutoFrameLayout>
     <com.base.lib.autolayout.AutoRelativeLayout
     android:layout_width="match_parent"
     android:layout_height="28px"
