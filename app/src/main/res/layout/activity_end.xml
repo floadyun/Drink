@@ -20,6 +20,23 @@
             android:background="@drawable/ic_huawei_logo"
             android:layout_alignParentRight="true"/>
     </com.base.lib.autolayout.AutoRelativeLayout>
+    <com.base.lib.autolayout.AutoRelativeLayout
+        android:layout_width="263px"
+        android:layout_height="483px"
+        android:background="@drawable/bg_end_menu">
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/end_menu_1"/>
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/end_menu_2"/>
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/end_menu_3"/>
+    </com.base.lib.autolayout.AutoRelativeLayout>
     <View
         android:layout_width="625px"
         android:layout_height="349px"

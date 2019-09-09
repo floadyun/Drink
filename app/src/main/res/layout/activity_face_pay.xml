@@ -53,11 +53,10 @@
         android:layout_marginRight="150px">
         <View
             android:id="@+id/person_info_view"
-            android:layout_width="257px"
+            android:layout_width="wrap_content"
             android:layout_height="264px"
             android:background="@drawable/face_image_1"/>
         <View
-            android:id="@+id/pay_status_view"
             android:layout_width="325px"
             android:layout_height="91px"
             android:background="@drawable/bg_pay_sucess"

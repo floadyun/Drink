@@ -52,7 +52,6 @@ public class MainActivity extends AppBaseActivity {
 
         EventBus.getDefault().register(this);
 
-
         for (int i=0;i<viewIds.length;i++){
             startViewAnimation(viewIds[i]);
         }

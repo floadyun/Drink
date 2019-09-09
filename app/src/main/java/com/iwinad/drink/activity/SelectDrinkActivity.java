@@ -55,7 +55,7 @@ public class SelectDrinkActivity extends AppBaseActivity {
         setContentView(R.layout.activity_select_drink);
         ButterKnife.bind(this);
 
-       // dataSerialPort.init();
+        dataSerialPort.init();
 
         initScrollView();
     }
@@ -96,18 +96,18 @@ public class SelectDrinkActivity extends AppBaseActivity {
         switch(type){
             case 0:   // 绿眼
                 mixDrinkInfo.type = 0;
-                mixDrinkInfo.bottles = new int[]{13,12,11,1};
-                mixDrinkInfo.formulaCapacitys = new int[]{5,15,35,15};
+                mixDrinkInfo.bottles = new int[]{11,10,12};
+                mixDrinkInfo.formulaCapacitys = new int[]{15,35,20};
                 break;
             case 1:   // 微笑
                 mixDrinkInfo.type = 0;
-                mixDrinkInfo.bottles = new int[]{15,4,7,1};
-                mixDrinkInfo.formulaCapacitys = new int[]{20,10,5,25};
+                mixDrinkInfo.bottles = new int[]{3,14,6};
+                mixDrinkInfo.formulaCapacitys = new int[]{10,20,30};
                 break;
             case 2:   // 俄罗斯范儿
                 mixDrinkInfo.type = 1;
-                mixDrinkInfo.bottles = new int[]{12,4,13,1};
-                mixDrinkInfo.formulaCapacitys = new int[]{20,20,5,25};
+                mixDrinkInfo.bottles = new int[]{3,11,12};
+                mixDrinkInfo.formulaCapacitys = new int[]{20,20,30};
                 break;
         }
         int capacity = 0;

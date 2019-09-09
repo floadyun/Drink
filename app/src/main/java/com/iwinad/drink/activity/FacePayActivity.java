@@ -32,8 +32,6 @@ public class FacePayActivity extends AppBaseActivity {
     View infoView;
     @BindView(R.id.identity_status_view)
     View identityStatusView;
-    @BindView(R.id.pay_status_view)
-    View payStatusView;
 
     private Handler mHandler;
 
@@ -56,6 +54,8 @@ public class FacePayActivity extends AppBaseActivity {
                 finishSelf();
             }
         },3000);
+
+        setIdentityFailure();
     }
     /**
      * 上传图片识别
@@ -90,11 +90,12 @@ public class FacePayActivity extends AppBaseActivity {
         }
         return false;
     }
-
     /**
      * 识别失败
      */
     private void setIdentityFailure(){
-
+        faceImage.setImageResource(R.drawable.avator_identity_failure);
+        infoView.setBackgroundResource(R.drawable.face_failure);
+        identityStatusView.setBackgroundResource(R.drawable.bg_identity_failure);
     }
 }
