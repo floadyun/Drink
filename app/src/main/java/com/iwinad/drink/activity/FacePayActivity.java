@@ -72,7 +72,6 @@ public class FacePayActivity extends AppBaseActivity {
                 toEndActivity();
             }
         });
-        setIdentityFailure();
     }
     /**
      * 跳转最后一个页面
@@ -91,15 +90,15 @@ public class FacePayActivity extends AppBaseActivity {
      * @param faceInfoEntity
      * @return
      */
-    private boolean isIdentifySuccess(FaceInfoEntity faceInfoEntity){
+    private void isIdentifySuccess(FaceInfoEntity faceInfoEntity){
         for (FaceInfoEntity faceInfo:Consts.getFaceInfoEntities()){
             if(faceInfoEntity.姓名.equals(faceInfo.姓名)){
                 infoView.setBackgroundResource(faceInfoEntity.faceImage);
                 faceImage.setImageBitmap(BitmapFactory.decodeFile(imagePath));
-                return true;
+                return ;
             }
         }
-        return false;
+        setIdentityFailure();
     }
     /**
      * 识别失败
