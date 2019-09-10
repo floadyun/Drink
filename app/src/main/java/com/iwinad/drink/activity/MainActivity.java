@@ -1,5 +1,6 @@
 package com.iwinad.drink.activity;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -45,6 +46,8 @@ public class MainActivity extends AppBaseActivity {
     private int[] viewIds = new int[]{R.id.main_menu_1,R.id.main_menu_2,R.id.main_menu_3,
             R.id.main_menu_4,R.id.main_menu_5,R.id.main_menu_6,R.id.main_menu_7};
 
+    private String[] permissions = new String[]{Manifest.permission.CAMERA};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,8 +58,17 @@ public class MainActivity extends AppBaseActivity {
         for (int i=0;i<viewIds.length;i++){
             startViewAnimation(viewIds[i]);
         }
-    }
+        checkPermissions(permissions, 1, new PermissionsResultListener() {
+            @Override
+            public void onSuccessful(int[] results) {
 
+            }
+            @Override
+            public void onFailure() {
+
+            }
+        });
+    }
     private void startViewAnimation(int viewId){
         View animView = findViewById(viewId);
         AnimatorSet animatorSet = new AnimatorSet();

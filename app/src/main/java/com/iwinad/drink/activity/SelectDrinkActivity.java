@@ -149,10 +149,8 @@ public class SelectDrinkActivity extends AppBaseActivity {
      * 跳转至人脸识别
      */
     private void gotoFaceRecognition(){
-//        Intent intent = new Intent(this,FaceRecognitionActivity.class);
-//        intent.putExtra(Consts.FACE_TYPE,1);
-//        startActivity(intent);
-        Intent intent = new Intent(this,FacePayActivity.class);
+        Intent intent = new Intent(this,FaceRecognitionActivity.class);
+        intent.putExtra(Consts.FACE_TYPE,1);
         startActivity(intent);
     }
 }

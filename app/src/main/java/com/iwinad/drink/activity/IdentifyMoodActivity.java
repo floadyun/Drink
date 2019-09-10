@@ -6,10 +6,13 @@ import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.base.lib.baseui.AppBaseActivity;
 import com.iwinad.drink.Consts;
+import com.iwinad.drink.util.SaveUtil;
 import com.vise.face.CameraPreview;
 import com.vise.face.DetectorData;
 import com.vise.face.DetectorProxy;
@@ -32,16 +35,19 @@ import butterknife.ButterKnife;
 public class IdentifyMoodActivity extends AppBaseActivity {
     @BindView(R.id.face_detector_preview)
     CameraPreview mFace_detector_preview;
+
     private DetectorProxy mDetectorProxy;
+
     private IDataListener mDataListener = new IDataListener() {
         @Override
         public void onDetectorData(DetectorData detectorData) {
             if(detectorData.getLightIntensity()>150){
-                //    takePicture();
+                takePicture();
             }
         }
     };
-    private Handler handler;
+
+    private Handler mHandler;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,14 +56,7 @@ public class IdentifyMoodActivity extends AppBaseActivity {
 
         initFaceDetector();
 
-        handler = new Handler();
-
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-//                gotoSelectDrink();
-            }
-        },2000);
+        mHandler = new Handler();
     }
     private void initFaceDetector(){
         //创建代理类，必须传入相机预览界面
@@ -73,6 +72,21 @@ public class IdentifyMoodActivity extends AppBaseActivity {
                 .setFaceRectColor(Color.rgb(255, 203, 15))
                 .build();
     }
+    private void takePicture(){
+        mFace_detector_preview.getCamera().takePicture(new Camera.ShutterCallback() {
+            @Override
+            public void onShutter() {
+
+            }
+        }, null, new Camera.PictureCallback() {
+            @Override
+            public void onPictureTaken(byte[] bytes, Camera camera) {
+                mFace_detector_preview.getCamera().stopPreview();
+                gotoSelectDrink();
+                finish();
+            }
+        });
+    }
     /**
      * 跳转至选酒
      */
@@ -80,5 +94,34 @@ public class IdentifyMoodActivity extends AppBaseActivity {
         Intent intent = new Intent(this,SelectDrinkActivity.class);
         intent.putExtra(Consts.FACE_TYPE,0);
         startActivity(intent);
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mDetectorProxy != null) {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mDetectorProxy.detector();
+                }
+            },1000);
+        }
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mDetectorProxy != null) {
+            mDetectorProxy.release();
+        }
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 }

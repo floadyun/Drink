@@ -2,6 +2,7 @@ package com.iwinad.drink.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.WindowManager;
 import android.widget.Toast;
 import com.base.lib.baseui.AppBaseActivity;
@@ -22,6 +24,7 @@ import com.base.lib.util.ImageUtil;
 import com.iwinad.drink.Consts;
 import com.iwinad.drink.R;
 import com.iwinad.drink.model.FaceType;
+import com.iwinad.drink.util.SaveUtil;
 import com.vise.face.CameraPreview;
 import com.vise.face.DetectorData;
 import com.vise.face.DetectorProxy;
@@ -29,15 +32,7 @@ import com.vise.face.FaceRectView;
 import com.vise.face.ICameraCheckListener;
 import com.vise.face.IDataListener;
 import com.vise.log.ViseLog;
-
 import org.greenrobot.eventbus.EventBus;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -81,7 +76,11 @@ public class FaceRecognitionActivity extends AppBaseActivity {
         public void onDetectorData(DetectorData detectorData) {
             mDetectorData = detectorData;
             if(mDetectorData.getLightIntensity()>150){
-                takePicture();
+                try {
+                    takePicture();
+                }catch (Exception e){
+
+                }
             }
         }
     };
@@ -95,7 +94,8 @@ public class FaceRecognitionActivity extends AppBaseActivity {
         mFace_detector_face.getHolder().setFormat(PixelFormat.TRANSLUCENT);
         initFaceDetector();
         mHandler = new Handler();
-
+        // Activity启动后就锁定为启动时的方向
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
         faceType = getIntent().getIntExtra(Consts.FACE_TYPE,0);
     }
     private void initFaceDetector(){
@@ -124,206 +124,14 @@ public class FaceRecognitionActivity extends AppBaseActivity {
             @Override
             public void onPictureTaken(byte[] bytes, Camera camera) {
                 mFace_detector_preview.getCamera().stopPreview();
-                saveImage(bytes);
-                finish();
+                String avatorPath = SaveUtil.saveImage(FaceRecognitionActivity.this,mFace_detector_preview,mDetectorData,bytes);
+                if(!TextUtils.isEmpty(avatorPath)){
+                    gotoPayResult(avatorPath);
+                    finish();
+                }
             }
         });
     }
-    /**
-     * 保存拍照的图片
-     *
-     * @param data
-     */
-    private void saveImage(byte[] data) {
-        File pictureFile = getOutputFile(this, "face", "photo.jpg");//拍照图片
-        File avatarFile = getOutputFile(this, "face", "avatar.jpg");//截取人脸图片
-        if (pictureFile == null || avatarFile == null) {
-            return;
-        }
-        if (pictureFile.exists()) {
-            pictureFile.delete();
-        }
-        if (avatarFile.exists()) {
-            avatarFile.delete();
-        }
-        Rect rect = new Rect();
-        if (mDetectorData != null && mDetectorData.getFaceRectList() != null
-                && mDetectorData.getFaceRectList().length > 0
-                && mDetectorData.getFaceRectList()[0].right > 0) {
-            rect = mDetectorData.getFaceRectList()[0];
-        }
-        ViseLog.i("save picture start!");
-        Bitmap bitmap = getImage(data, rect, 150, 200, pictureFile, avatarFile);
-        ViseLog.i("save picture complete!");
-        gotoPayResult(avatarFile.getAbsolutePath());
-        if (bitmap != null) {
-            bitmap.recycle();
-            bitmap = null;
-        }
-    }
-    private String getDiskCacheDir(Context context, String dirName) {
-        String cachePath = "";
-        if ((Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
-                || !Environment.isExternalStorageRemovable())
-                && context != null && context.getExternalCacheDir() != null) {
-            cachePath = context.getExternalCacheDir().getPath();
-        } else {
-            if (context != null && context.getCacheDir() != null) {
-                cachePath = context.getCacheDir().getPath();
-            }
-        }
-        return cachePath + File.separator + dirName;
-    }
-    private File getOutputFile(Context context, String dirName, String fileName) {
-        File dirFile = new File(getDiskCacheDir(context, dirName));
-        if (!dirFile.exists()) {
-            if (!dirFile.mkdirs()) {
-                ViseLog.d("failed to create directory");
-                return null;
-            }
-        }
-        File file = new File(dirFile.getPath() + File.separator + fileName);
-        return file;
-    }
-    private Bitmap getImage(byte[] data, Rect rect, float ww, float hh, File pictureFile, File avatarFile) {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
-        int w = options.outWidth;
-        int h = options.outHeight;
-        float scale = 1.0F;
-        if (w < h) {
-            scale = ww / (float) w;
-            if (hh / (float) h > scale) {
-                scale = hh / (float) h;
-            }
-        } else {
-            scale = ww / (float) h;
-            if (hh / (float) w > scale) {
-                scale = hh / (float) w;
-            }
-        }
-        Bitmap scaleBitmap = scaleImage(bitmap, (int) ((float) w * scale), (int) ((float) h * scale));
-        if (bitmap != null && !bitmap.isRecycled()) {
-            bitmap.recycle();
-            bitmap = null;
-        }
-        return compressImage(scaleBitmap, rect, 1536, pictureFile, avatarFile);
-    }
-    private Bitmap compressImage(Bitmap image, Rect rect, int size, File pictureFile, File avatarFile) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Bitmap bitmap = image;
-        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        int options = 100;
-        while (baos.toByteArray().length / 1024 > size) {
-            baos.reset();
-            options -= 5;
-            image.compress(Bitmap.CompressFormat.JPEG, options, baos);
-        }
-        FileOutputStream fileOutputStream = null;
-        try {
-            fileOutputStream = new FileOutputStream(pictureFile);
-            if (mFace_detector_preview != null) {
-                if (mFace_detector_preview.getCameraId() == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-                    bitmap = rotaingImageView(360 - mFace_detector_preview.getDisplayOrientation(), bitmap);
-                } else {
-                    bitmap = rotaingImageView(mFace_detector_preview.getDisplayOrientation(), bitmap);
-                }
-            }
-            bitmap.compress(Bitmap.CompressFormat.JPEG, options, fileOutputStream);
-        } catch (FileNotFoundException var18) {
-            ViseLog.e("File not found: " + var18.getMessage());
-        } finally {
-            try {
-                if (fileOutputStream != null) {
-                    fileOutputStream.flush();
-                    fileOutputStream.close();
-                }
-            } catch (IOException var16) {
-                ViseLog.e("Error accessing file: " + var16.getMessage());
-            }
-        }
-        float scale = (float) bitmap.getHeight() / DeviceUtils.getScreenHeight(this);
-        if (rect.right > 0) {
-            int top = (int) (rect.top * scale);
-            int bottom = (int) (rect.bottom * scale);
-            rect.left = 0;
-            rect.right = bitmap.getWidth();
-            rect.top = top - (bitmap.getWidth() - (bottom - top)) / 2;
-            rect.bottom = bottom + (bitmap.getWidth() - (bottom - top)) / 2;
-        } else {
-            rect.left = 0;
-            rect.right = bitmap.getWidth();
-            rect.top = (bitmap.getHeight() - bitmap.getWidth()) / 2;
-            rect.bottom = (bitmap.getHeight() - bitmap.getWidth()) / 2 + bitmap.getWidth();
-        }
-        Bitmap avatarBitmap = Bitmap.createBitmap(bitmap, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top);
-        try {
-            fileOutputStream = new FileOutputStream(avatarFile);
-            avatarBitmap.compress(Bitmap.CompressFormat.JPEG, 50, fileOutputStream);
-        } catch (FileNotFoundException var18) {
-            ViseLog.e("File not found: " + var18.getMessage());
-        } finally {
-            if (avatarBitmap != null && !avatarBitmap.isRecycled()) {
-                avatarBitmap.recycle();
-                avatarBitmap = null;
-            }
-            try {
-                if (fileOutputStream != null) {
-                    fileOutputStream.flush();
-                    fileOutputStream.close();
-                }
-            } catch (IOException var16) {
-                ViseLog.e("Error accessing file: " + var16.getMessage());
-            }
-
-        }
-
-        if (baos != null) {
-            try {
-                baos.close();
-            } catch (IOException var17) {
-                var17.printStackTrace();
-            }
-        }
-
-        if (image != null && !image.isRecycled()) {
-            image.recycle();
-            image = null;
-        }
-
-        return bitmap;
-    }
-    private Bitmap scaleImage(Bitmap bm, int newWidth, int newHeight) {
-        if (bm == null) {
-            return null;
-        } else {
-            int width = bm.getWidth();
-            int height = bm.getHeight();
-            float scaleWidth = (float) newWidth / (float) width;
-            float scaleHeight = (float) newHeight / (float) height;
-            Matrix matrix = new Matrix();
-            matrix.postScale(scaleWidth, scaleHeight);
-            Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true);
-            if (bm != null & !bm.isRecycled()) {
-                bm.recycle();
-                bm = null;
-            }
-
-            return newbm;
-        }
-    }
-    private Bitmap rotaingImageView(int angle, Bitmap bitmap) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate((float) angle);
-        Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-        if (resizedBitmap != bitmap && bitmap != null && !bitmap.isRecycled()) {
-            bitmap.recycle();
-            bitmap = null;
-        }
-
-        return resizedBitmap;
-    }
-
     private void gotoPayResult(String imagePath){
         if(faceType==0){
             EventBus.getDefault().post(new FaceType(faceType,imagePath));
@@ -333,7 +141,6 @@ public class FaceRecognitionActivity extends AppBaseActivity {
             startActivity(intent);
         }
     }
-
     @Override
     protected void onStart() {
         super.onStart();

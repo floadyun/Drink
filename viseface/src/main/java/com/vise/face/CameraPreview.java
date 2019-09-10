@@ -118,7 +118,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             //获取最大宽高，得出最大支持像素
             Camera.Parameters parameters = mCamera.getParameters();
             Camera.Size maxPictureSize = FaceUtil.findMaxCameraSize(parameters.getSupportedPictureSizes());
-           // Camera.Size cameraSize = FaceUtil.getOptimalPreviewSize(parameters.getSupportedPictureSizes(),mCameraWidth,mCameraHeight);
+//            Camera.Size cameraSize = FaceUtil.getOptimalPreviewSize(parameters.getSupportedPictureSizes(),mCameraWidth,mCameraHeight);
             if (maxPictureSize != null) {
                 pixels = maxPictureSize.width * maxPictureSize.height;
             }
@@ -146,13 +146,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             });
             mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
             mCamera.setPreviewDisplay(mHolder);
-            ViseLog.i("camera size width:" + mCameraWidth + ",height:" + mCameraHeight);
+            ViseLog.i("camera size width:" + getWidth() + ",height:" + getHeight());
             if (mFaceDetector != null) {
-                mFaceDetector.setCameraWidth(mCameraWidth);
-                mFaceDetector.setCameraHeight(mCameraHeight);
+                mFaceDetector.setCameraWidth(getWidth());
+                mFaceDetector.setCameraHeight(getHeight());
             }
             //设置相机参数
-            mDisplayOrientation = FaceUtil.setCameraParams(this, mFaceDetector, mCamera, mCameraId, mCameraWidth, mCameraHeight);
+            mDisplayOrientation = FaceUtil.setCameraParams(this, mFaceDetector, mCamera, mCameraId, getWidth(), getHeight());
             ViseLog.i("camera getPreviewSize width:" + mCamera.getParameters().getPreviewSize().width
                     + ",height:" + mCamera.getParameters().getPreviewSize().height);
             ViseLog.i("camera getPictureSize width:" + mCamera.getParameters().getPictureSize().width
