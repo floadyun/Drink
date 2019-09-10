@@ -55,7 +55,7 @@ public class SelectDrinkActivity extends AppBaseActivity {
         setContentView(R.layout.activity_select_drink);
         ButterKnife.bind(this);
 
-        dataSerialPort.init();
+       // dataSerialPort.init();
 
         initScrollView();
     }
