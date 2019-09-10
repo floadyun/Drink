@@ -49,7 +49,7 @@ public class FacePayActivity extends AppBaseActivity {
 
         mHandler = new Handler();
 
-        uploadImage(imagePath);
+    //    uploadImage(imagePath);
     }
     /**
      * 上传图片识别

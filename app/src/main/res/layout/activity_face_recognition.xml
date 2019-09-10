@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="1440px"
+    android:layout_height="1080px">
     <!--相机预览界面，必须设置-->
     <com.vise.face.CameraPreview
         android:id="@+id/face_detector_preview"

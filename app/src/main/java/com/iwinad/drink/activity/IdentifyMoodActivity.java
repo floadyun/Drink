@@ -2,6 +2,7 @@ package com.iwinad.drink.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +17,7 @@ import com.iwinad.drink.util.SaveUtil;
 import com.vise.face.CameraPreview;
 import com.vise.face.DetectorData;
 import com.vise.face.DetectorProxy;
+import com.vise.face.FaceRectView;
 import com.vise.face.IDataListener;
 import com.iwinad.drink.R;
 import butterknife.BindView;
@@ -35,7 +37,8 @@ import butterknife.ButterKnife;
 public class IdentifyMoodActivity extends AppBaseActivity {
     @BindView(R.id.face_detector_preview)
     CameraPreview mFace_detector_preview;
-
+    @BindView(R.id.face_detector_face)
+    FaceRectView mFace_detector_face;
     private DetectorProxy mDetectorProxy;
 
     private IDataListener mDataListener = new IDataListener() {
@@ -53,10 +56,19 @@ public class IdentifyMoodActivity extends AppBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_identify_mood);
         ButterKnife.bind(this);
-
+        mFace_detector_face.setZOrderOnTop(true);
+        mFace_detector_face.getHolder().setFormat(PixelFormat.TRANSLUCENT);
         initFaceDetector();
 
         mHandler = new Handler();
+
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                gotoSelectDrink();
+                finish();
+            }
+        },5000);
     }
     private void initFaceDetector(){
         //创建代理类，必须传入相机预览界面
@@ -65,6 +77,7 @@ public class IdentifyMoodActivity extends AppBaseActivity {
                 .setDataListener(mDataListener)
                 //设置预览相机的相机ID
                 .setCameraId(Camera.CameraInfo.CAMERA_FACING_FRONT)
+                .setFaceRectView(mFace_detector_face)
                 .setDrawFaceRect(true)
                 //设置人脸识别框是否为完整矩形
                 .setFaceIsRect(false)

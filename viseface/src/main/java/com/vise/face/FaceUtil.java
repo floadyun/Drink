@@ -297,19 +297,21 @@ public class FaceUtil {
         int tempH = (int) (width * (w / h));
         if (cameraPreview != null) {
             if (tempW >= width) {
-                cameraPreview.setLayoutParams(new FrameLayout.LayoutParams(tempW, height));
+       //         cameraPreview.setLayoutParams(new FrameLayout.LayoutParams(tempW, height));
                 scale = tempW / h;
             } else if (tempH >= height) {
-                cameraPreview.setLayoutParams(new FrameLayout.LayoutParams(width, tempH));
+          //      cameraPreview.setLayoutParams(new FrameLayout.LayoutParams(width, tempH));
                 scale = tempH / w;
             } else {
-                cameraPreview.setLayoutParams(new FrameLayout.LayoutParams(width, height));
+       //         cameraPreview.setLayoutParams(new FrameLayout.LayoutParams(width, height));
             }
         }
         if (faceDetector != null) {
             faceDetector.setZoomRatio(5f * scale);
-            faceDetector.setPreviewWidth((int) w);
-            faceDetector.setPreviewHeight((int) h);
+//            faceDetector.setPreviewWidth((int) w);
+//            faceDetector.setPreviewHeight((int) h);
+            faceDetector.setPreviewWidth(width);
+            faceDetector.setPreviewWidth(height);
         }
 
         parameters.setJpegQuality(100);

@@ -63,7 +63,6 @@ public class FaceRecognitionActivity extends AppBaseActivity {
         }
         @Override
         public void checkPixels(long pixels, boolean isSupport) {
-            ViseLog.i("checkPixels" + pixels);
             if (!isSupport) {
                 Toast.makeText(FaceRecognitionActivity.this, "手机相机像素达不到要求！", Toast.LENGTH_SHORT).show();
                 finish();
