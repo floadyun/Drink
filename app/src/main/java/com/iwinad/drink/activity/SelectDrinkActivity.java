@@ -72,8 +72,6 @@ public class SelectDrinkActivity extends AppBaseActivity {
                 .setPivotX(Pivot.X.CENTER) //CENTER is a default one
                 .setPivotY(Pivot.Y.CENTER) //CENTER is a default one
                 .build());
-        scrollView.setOffscreenItems(2);
-        scrollView.setAdapter(quickAdapter);
         scrollView.addOnItemChangedListener(new DiscreteScrollView.OnItemChangedListener<RecyclerView.ViewHolder>() {
             @Override
             public void onCurrentItemChanged(@Nullable RecyclerView.ViewHolder viewHolder, int adapterPosition) {
@@ -90,6 +88,8 @@ public class SelectDrinkActivity extends AppBaseActivity {
             }
         });
         quickAdapter.setNewData(Arrays.asList(imageIds));
+        scrollView.setAdapter(quickAdapter);
+        scrollView.smoothScrollToPosition(1);
     }
     private void startDrink(int type){
         MixDrinkInfo mixDrinkInfo = new MixDrinkInfo();
@@ -128,11 +128,11 @@ public class SelectDrinkActivity extends AppBaseActivity {
             public void callback(SerialPortResponse data) {
                 if (data.errorCode == SerialPortResponse.ERR_BUSY) {
                     Log.d("demo","忙碌中...");
-                    Toast.makeText(SelectDrinkActivity.this, "忙碌中...", Toast.LENGTH_SHORT).show();
+              //      Toast.makeText(SelectDrinkActivity.this, "忙碌中...", Toast.LENGTH_SHORT).show();
                 } else if (data.errorCode == SerialPortResponse.ERR_SUCCEED
                         || data.errorCode == SerialPortResponse.ERR_TIME_OUT
                         || data.errorCode == SerialPortResponse.ERR_FAILED) {
-                    Toast.makeText(SelectDrinkActivity.this, "完成", Toast.LENGTH_SHORT).show();
+                //    Toast.makeText(SelectDrinkActivity.this, "完成", Toast.LENGTH_SHORT).show();
                     Log.d("demo","完成");
                     isDrinking = false;
                 } else if (data.errorCode == SerialPortResponse.ERR_WAITING) {
@@ -140,7 +140,7 @@ public class SelectDrinkActivity extends AppBaseActivity {
                 } else if (data.errorCode == SerialPortResponse.ERR_START) {
                     Log.d("demo","开始");
                     isDrinking = true;
-                    Toast.makeText(SelectDrinkActivity.this, "开始", Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(SelectDrinkActivity.this, "开始", Toast.LENGTH_SHORT).show();
                 }
             }
         });

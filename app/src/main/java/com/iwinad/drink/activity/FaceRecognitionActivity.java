@@ -44,8 +44,6 @@ import butterknife.ButterKnife;
 public class FaceRecognitionActivity extends AppBaseActivity {
     @BindView(R.id.face_detector_preview)
     CameraPreview mFace_detector_preview;
-    @BindView(R.id.face_detector_face)
-    FaceRectView mFace_detector_face;
 
     private DetectorProxy mDetectorProxy;
     private DetectorData mDetectorData;
@@ -74,7 +72,8 @@ public class FaceRecognitionActivity extends AppBaseActivity {
         @Override
         public void onDetectorData(DetectorData detectorData) {
             mDetectorData = detectorData;
-            if(mDetectorData.getLightIntensity()>150){
+            ViseLog.d("mDetectorData="+mDetectorData.getFacesCount());
+            if(mDetectorData.getFacesCount()>=1){
                 try {
                     takePicture();
                 }catch (Exception e){
@@ -89,12 +88,10 @@ public class FaceRecognitionActivity extends AppBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_face_recognition);
         ButterKnife.bind(this);
-        mFace_detector_face.setZOrderOnTop(true);
-        mFace_detector_face.getHolder().setFormat(PixelFormat.TRANSLUCENT);
+//        mFace_detector_face.setZOrderOnTop(true);
+//        mFace_detector_face.getHolder().setFormat(PixelFormat.TRANSLUCENT);
         initFaceDetector();
         mHandler = new Handler();
-        // Activity启动后就锁定为启动时的方向
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
         faceType = getIntent().getIntExtra(Consts.FACE_TYPE,0);
     }
     private void initFaceDetector(){
@@ -103,14 +100,8 @@ public class FaceRecognitionActivity extends AppBaseActivity {
                 .setMinCameraPixels(3000000)
                 .setCheckListener(mCameraCheckListener)
                 .setDataListener(mDataListener)
-                .setFaceRectView(mFace_detector_face)
                 //设置预览相机的相机ID
                 .setCameraId(Camera.CameraInfo.CAMERA_FACING_FRONT)
-                .setDrawFaceRect(true)
-                //设置人脸识别框是否为完整矩形
-                .setFaceIsRect(false)
-                //设置人脸识别框的RGB颜色
-                .setFaceRectColor(Color.rgb(255, 203, 15))
                 .build();
     }
     private void takePicture(){

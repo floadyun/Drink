@@ -1,15 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="1440px"
-    android:layout_height="1080px">
-    <!--相机预览界面，必须设置-->
-    <com.vise.face.CameraPreview
-        android:id="@+id/face_detector_preview"
+<com.base.lib.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_select_drink">
+    <com.base.lib.autolayout.AutoFrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+        <!--相机预览界面，必须设置-->
+        <com.vise.face.CameraPreview
+            android:id="@+id/face_detector_preview"
+            android:layout_width="300px"
+            android:layout_height="400px"/>
+        <View
+            android:layout_width="436px"
+            android:layout_height="448px"
+            android:background="@drawable/bg_identity_face_1"/>
+    </com.base.lib.autolayout.AutoFrameLayout>
+    <com.base.lib.autolayout.AutoRelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-    <!--绘制人脸识别框，可依需配置-->
-    <com.vise.face.FaceRectView
-        android:id="@+id/face_detector_face"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-</FrameLayout>
+        android:layout_height="28px"
+        android:layout_marginTop="30px"
+        android:paddingLeft="30px"
+        android:paddingRight="30px">
+        <View
+            android:layout_width="777px"
+            android:layout_height="13px"
+            android:background="@drawable/top_line_image"
+            android:layout_centerVertical="true"/>
+        <View
+            android:layout_width="125px"
+            android:layout_height="28px"
+            android:background="@drawable/ic_huawei_logo"
+            android:layout_alignParentRight="true"/>
+    </com.base.lib.autolayout.AutoRelativeLayout>
+</com.base.lib.autolayout.AutoRelativeLayout>

@@ -36,7 +36,7 @@
             android:id="@+id/identity_status_view"
             android:layout_width="110px"
             android:layout_height="34px"
-            android:background="@drawable/bg_identity_status"/>
+            android:background="@drawable/bg_identity_failure"/>
     </com.base.lib.autolayout.AutoLinearLayout>
     <View
         android:layout_width="616px"
@@ -55,7 +55,7 @@
             android:id="@+id/person_info_view"
             android:layout_width="257px"
             android:layout_height="264px"
-            android:background="@drawable/face_image_1"/>
+            android:background="@drawable/face_failure"/>
         <View
             android:layout_width="325px"
             android:layout_height="91px"

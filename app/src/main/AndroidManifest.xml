@@ -33,7 +33,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.IdentifyMoodActivity" android:screenOrientation="landscape" android:theme="@style/NoTitleFullscreen"/>
-        <activity android:name=".activity.FaceRecognitionActivity" android:theme="@style/NoTitleFullscreen"/>
+        <activity android:name=".activity.FaceRecognitionActivity" android:screenOrientation="landscape" android:theme="@style/NoTitleFullscreen"/>
         <activity android:name=".activity.SelectDrinkActivity" android:screenOrientation="landscape" android:theme="@style/NoTitleFullscreen"/>
         <activity android:name=".activity.FacePayActivity" android:screenOrientation="landscape" android:theme="@style/NoTitleFullscreen"/>
         <activity android:name=".activity.EndActivity" android:screenOrientation="landscape" android:theme="@style/NoTitleFullscreen"/>

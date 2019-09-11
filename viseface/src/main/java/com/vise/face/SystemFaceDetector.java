@@ -9,7 +9,9 @@ import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.media.FaceDetector;
+import android.os.Environment;
 
+import com.base.lib.util.FileUtil;
 import com.vise.log.ViseLog;
 
 import java.io.ByteArrayOutputStream;
@@ -59,6 +61,7 @@ public class SystemFaceDetector<T> extends BaseFaceDetector<T> {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         Matrix matrix = new Matrix();
+
         //设置各个角度的相机，这样我们的检测效果才是最好
         switch (mOrientionOfCamera) {
             case 0:
@@ -76,12 +79,13 @@ public class SystemFaceDetector<T> extends BaseFaceDetector<T> {
         }
         matrix.postScale(0.2f, 0.2f);//为了减小内存压力，将图片缩放，但是也不能太小，否则检测不到人脸
         bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
-
+   //     FileUtil.saveBitmapToFile(bitmap, Environment.getExternalStorageDirectory()+"/drink");
         //初始化人脸检测
         FaceDetector detector = new FaceDetector(bitmap.getWidth(), bitmap.getHeight(), mMaxFacesCount);
         mFaces = new FaceDetector.Face[mMaxFacesCount];
         //这里通过向findFaces中传递帧图转化后的bitmap和最大检测的人脸数face，返回检测后的人脸数
         mDetectorData.setFacesCount(detector.findFaces(bitmap, mFaces));
+        ViseLog.d("the mFaces..."+mDetectorData.getFacesCount());
         //绘制识别后的人脸区域的类
         getFaceRect();
         bitmap.recycle();

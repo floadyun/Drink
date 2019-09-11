@@ -55,7 +55,7 @@ public class SaveUtil {
             bitmap.recycle();
             bitmap = null;
         }
-        return avatarFile.getAbsolutePath();
+        return pictureFile.getAbsolutePath();
     }
     private static String getDiskCacheDir(Context context, String dirName) {
         String cachePath = "";
@@ -152,27 +152,27 @@ public class SaveUtil {
             rect.top = (bitmap.getHeight() - bitmap.getWidth()) / 2;
             rect.bottom = (bitmap.getHeight() - bitmap.getWidth()) / 2 + bitmap.getWidth();
         }
-        Bitmap avatarBitmap = Bitmap.createBitmap(bitmap, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top);
-        try {
-            fileOutputStream = new FileOutputStream(avatarFile);
-            avatarBitmap.compress(Bitmap.CompressFormat.JPEG, 50, fileOutputStream);
-        } catch (FileNotFoundException var18) {
-            ViseLog.e("File not found: " + var18.getMessage());
-        } finally {
-            if (avatarBitmap != null && !avatarBitmap.isRecycled()) {
-                avatarBitmap.recycle();
-                avatarBitmap = null;
-            }
-            try {
-                if (fileOutputStream != null) {
-                    fileOutputStream.flush();
-                    fileOutputStream.close();
-                }
-            } catch (IOException var16) {
-                ViseLog.e("Error accessing file: " + var16.getMessage());
-            }
-
-        }
+//        Bitmap avatarBitmap = Bitmap.createBitmap(bitmap, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top);
+//        try {
+//            fileOutputStream = new FileOutputStream(avatarFile);
+//            avatarBitmap.compress(Bitmap.CompressFormat.JPEG, 50, fileOutputStream);
+//        } catch (FileNotFoundException var18) {
+//            ViseLog.e("File not found: " + var18.getMessage());
+//        } finally {
+//            if (avatarBitmap != null && !avatarBitmap.isRecycled()) {
+//                avatarBitmap.recycle();
+//                avatarBitmap = null;
+//            }
+//            try {
+//                if (fileOutputStream != null) {
+//                    fileOutputStream.flush();
+//                    fileOutputStream.close();
+//                }
+//            } catch (IOException var16) {
+//                ViseLog.e("Error accessing file: " + var16.getMessage());
+//            }
+//
+//        }
 
         if (baos != null) {
             try {

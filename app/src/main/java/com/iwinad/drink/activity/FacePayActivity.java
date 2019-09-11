@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.BinderThread;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -40,6 +41,8 @@ public class FacePayActivity extends AppBaseActivity {
 
     private String imagePath;
 
+    private Runnable runnable;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +52,12 @@ public class FacePayActivity extends AppBaseActivity {
 
         mHandler = new Handler();
 
-    //    uploadImage(imagePath);
+        if(!TextUtils.isEmpty(imagePath)){
+          //  uploadImage(imagePath);
+        }else {
+            toEndActivity();
+            setIdentityFailure();
+        }
     }
     /**
      * 上传图片识别
@@ -70,6 +78,7 @@ public class FacePayActivity extends AppBaseActivity {
             public void onError(Throwable e) {
                 super.onError(e);
                 toEndActivity();
+                setIdentityFailure();
             }
         });
     }
@@ -77,13 +86,14 @@ public class FacePayActivity extends AppBaseActivity {
      * 跳转最后一个页面
      */
     private void toEndActivity(){
-        mHandler.postDelayed(new Runnable() {
+        runnable = new Runnable() {
             @Override
             public void run() {
                 Intent intent = new Intent(FacePayActivity.this,EndActivity.class);
                 startActivity(intent);
             }
-        },3000);
+        };
+        mHandler.postDelayed(runnable,3000);
     }
     /**
      * 判断是否存在人脸信息
@@ -107,5 +117,12 @@ public class FacePayActivity extends AppBaseActivity {
         faceImage.setImageResource(R.drawable.avator_identity_failure);
         infoView.setBackgroundResource(R.drawable.face_failure);
         identityStatusView.setBackgroundResource(R.drawable.bg_identity_failure);
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(runnable!=null){
+            mHandler.removeCallbacks(runnable);
+        }
     }
 }

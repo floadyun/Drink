@@ -37,15 +37,15 @@ import butterknife.ButterKnife;
 public class IdentifyMoodActivity extends AppBaseActivity {
     @BindView(R.id.face_detector_preview)
     CameraPreview mFace_detector_preview;
-    @BindView(R.id.face_detector_face)
-    FaceRectView mFace_detector_face;
     private DetectorProxy mDetectorProxy;
 
     private IDataListener mDataListener = new IDataListener() {
         @Override
         public void onDetectorData(DetectorData detectorData) {
-            if(detectorData.getLightIntensity()>150){
-                takePicture();
+            if(detectorData.getFacesCount()>=1){
+                mFace_detector_preview.getCamera().stopPreview();
+                gotoSelectDrink();
+                finish();
             }
         }
     };
@@ -56,19 +56,9 @@ public class IdentifyMoodActivity extends AppBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_identify_mood);
         ButterKnife.bind(this);
-        mFace_detector_face.setZOrderOnTop(true);
-        mFace_detector_face.getHolder().setFormat(PixelFormat.TRANSLUCENT);
         initFaceDetector();
 
         mHandler = new Handler();
-
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                gotoSelectDrink();
-                finish();
-            }
-        },5000);
     }
     private void initFaceDetector(){
         //创建代理类，必须传入相机预览界面
@@ -77,28 +67,7 @@ public class IdentifyMoodActivity extends AppBaseActivity {
                 .setDataListener(mDataListener)
                 //设置预览相机的相机ID
                 .setCameraId(Camera.CameraInfo.CAMERA_FACING_FRONT)
-                .setFaceRectView(mFace_detector_face)
-                .setDrawFaceRect(true)
-                //设置人脸识别框是否为完整矩形
-                .setFaceIsRect(false)
-                //设置人脸识别框的RGB颜色
-                .setFaceRectColor(Color.rgb(255, 203, 15))
                 .build();
-    }
-    private void takePicture(){
-        mFace_detector_preview.getCamera().takePicture(new Camera.ShutterCallback() {
-            @Override
-            public void onShutter() {
-
-            }
-        }, null, new Camera.PictureCallback() {
-            @Override
-            public void onPictureTaken(byte[] bytes, Camera camera) {
-                mFace_detector_preview.getCamera().stopPreview();
-                gotoSelectDrink();
-                finish();
-            }
-        });
     }
     /**
      * 跳转至选酒

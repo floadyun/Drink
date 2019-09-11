@@ -16,6 +16,7 @@ import android.widget.FrameLayout;
 import com.vise.log.ViseLog;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -287,33 +288,32 @@ public class FaceUtil {
 
         // 获取摄像头支持的PreviewSize列表
         List<Camera.Size> previewSizeList = parameters.getSupportedPreviewSizes();
-        Point preSize = FaceUtil.findBestResolution(previewSizeList, new Point(width, height), false, 0.15f);
-        parameters.setPreviewSize(preSize.x, preSize.y);
+//        Point preSize = FaceUtil.findBestResolution(previewSizeList, new Point(width, height), false, 0.15f);
+        Camera.Size preSize = FaceUtil.getBestSupportedSize(camera,0,new Point(width,height),previewSizeList,new Point(width,height));
+        parameters.setPreviewSize(preSize.width, preSize.height);
 
-        float w = preSize.x;
-        float h = preSize.y;
+        float w = preSize.width;
+        float h = preSize.height;
         float scale = 1.0f;
         int tempW = (int) (height * (h / w));
         int tempH = (int) (width * (w / h));
         if (cameraPreview != null) {
             if (tempW >= width) {
-       //         cameraPreview.setLayoutParams(new FrameLayout.LayoutParams(tempW, height));
+             //   cameraPreview.setLayoutParams(new FrameLayout.LanyoutParams(tempW, height));
                 scale = tempW / h;
             } else if (tempH >= height) {
-          //      cameraPreview.setLayoutParams(new FrameLayout.LayoutParams(width, tempH));
+        //        cameraPreview.setLayoutParams(new FrameLayout.LayoutParams(width, tempH));
                 scale = tempH / w;
             } else {
-       //         cameraPreview.setLayoutParams(new FrameLayout.LayoutParams(width, height));
+         //       cameraPreview.setLayoutParams(new FrameLayout.LayoutParams(width, height));
             }
         }
+        ViseLog.d("scale........"+scale);
         if (faceDetector != null) {
             faceDetector.setZoomRatio(5f * scale);
-//            faceDetector.setPreviewWidth((int) w);
-//            faceDetector.setPreviewHeight((int) h);
-            faceDetector.setPreviewWidth(width);
-            faceDetector.setPreviewWidth(height);
+            faceDetector.setPreviewWidth((int) w);
+            faceDetector.setPreviewHeight((int) h);
         }
-
         parameters.setJpegQuality(100);
         if (parameters.getSupportedFocusModes().contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
             // 连续对焦
@@ -324,7 +324,54 @@ public class FaceUtil {
         camera.setParameters(parameters);
         return displayOrientation;
     }
+    private static Camera.Size getBestSupportedSize(Camera mCamera,int additionalRotation,Point specificPreviewSize,List<Camera.Size> sizes, Point previewViewSize) {
+        if (sizes == null || sizes.size() == 0) {
+            return mCamera.getParameters().getPreviewSize();
+        }
+        Camera.Size[] tempSizes = sizes.toArray(new Camera.Size[0]);
+        Arrays.sort(tempSizes, new Comparator<Camera.Size>() {
+            @Override
+            public int compare(Camera.Size o1, Camera.Size o2) {
+                if (o1.width > o2.width) {
+                    return -1;
+                } else if (o1.width == o2.width) {
+                    return o1.height > o2.height ? -1 : 1;
+                } else {
+                    return 1;
+                }
+            }
+        });
+        sizes = Arrays.asList(tempSizes);
 
+        Camera.Size bestSize = sizes.get(0);
+        float previewViewRatio;
+        if (previewViewSize != null) {
+            previewViewRatio = (float) previewViewSize.x / (float) previewViewSize.y;
+        } else {
+            previewViewRatio = (float) bestSize.width / (float) bestSize.height;
+        }
+
+        if (previewViewRatio > 1) {
+            previewViewRatio = 1 / previewViewRatio;
+        }
+        boolean isNormalRotate = (additionalRotation % 180 == 0);
+
+        for (Camera.Size s : sizes) {
+            if (specificPreviewSize != null && specificPreviewSize.x == s.width && specificPreviewSize.y == s.height) {
+                return s;
+            }
+            if (isNormalRotate) {
+                if (Math.abs((s.height / (float) s.width) - previewViewRatio) < Math.abs(bestSize.height / (float) bestSize.width - previewViewRatio)) {
+                    bestSize = s;
+                }
+            } else {
+                if (Math.abs((s.width / (float) s.height) - previewViewRatio) < Math.abs(bestSize.width / (float) bestSize.height - previewViewRatio)) {
+                    bestSize = s;
+                }
+            }
+        }
+        return bestSize;
+    }
     /**
      * 设置相机显示方向
      *
@@ -357,10 +404,6 @@ public class FaceUtil {
                 degree = 270;
                 break;
         }
-        if (faceDetector != null) {
-            faceDetector.setOrientionOfCamera(info.orientation);
-        }
-
         int result;
         if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
             result = (info.orientation + degree) % 360;
@@ -370,6 +413,10 @@ public class FaceUtil {
         }
         if (camera != null) {
             camera.setDisplayOrientation(result);
+        }
+        if (faceDetector != null) {
+            ViseLog.d("setOrientionOfCamera="+info.orientation);
+            faceDetector.setOrientionOfCamera(result);
         }
         return result;
     }

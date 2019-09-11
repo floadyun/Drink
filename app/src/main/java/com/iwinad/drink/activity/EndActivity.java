@@ -30,6 +30,8 @@ public class EndActivity extends AppBaseActivity {
 
     private int[] viewIds = new int[]{R.id.end_menu_1,R.id.end_menu_2,R.id.end_menu_3};
 
+    private Runnable runnable;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,14 +39,16 @@ public class EndActivity extends AppBaseActivity {
         setContentView(R.layout.activity_end);
 
         mHandler = new Handler();
-        mHandler.postDelayed(new Runnable() {//5秒后返回主页
+
+        runnable = new Runnable() {//5秒后返回主页
             @Override
             public void run() {
                 AppManager.getInstance().killActivity(IdentifyMoodActivity.class);
                 AppManager.getInstance().killActivity(SelectDrinkActivity.class);
                 finishSelf();
             }
-        },5000);
+        };
+        mHandler.postDelayed(runnable,5000);
         for (int i=0;i<viewIds.length;i++){
             startViewAnimation(viewIds[i]);
         }
@@ -84,5 +88,12 @@ public class EndActivity extends AppBaseActivity {
             }
         });
         scaleY.start();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(runnable!=null){
+            mHandler.removeCallbacks(runnable);
+        }
     }
 }
