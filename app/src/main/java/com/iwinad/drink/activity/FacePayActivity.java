@@ -53,7 +53,7 @@ public class FacePayActivity extends AppBaseActivity {
         mHandler = new Handler();
 
         if(!TextUtils.isEmpty(imagePath)){
-          //  uploadImage(imagePath);
+            uploadImage(imagePath);
         }else {
             toEndActivity();
             setIdentityFailure();

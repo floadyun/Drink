@@ -3,7 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_select_drink">
+    <View
+        android:layout_width="45px"
+        android:layout_height="258px"
+        android:background="@drawable/bg_left_slide"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15px"/>
+    <View
+        android:layout_width="82px"
+        android:layout_height="80px"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="115px"
+        android:background="@drawable/face_recognition_left"/>
     <com.base.lib.autolayout.AutoFrameLayout
+        android:id="@+id/face_recognition_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
@@ -12,21 +25,29 @@
             android:id="@+id/face_detector_preview"
             android:layout_width="300px"
             android:layout_height="400px"/>
-        <View
-            android:layout_width="436px"
-            android:layout_height="448px"
-            android:background="@drawable/bg_identity_face_1"/>
     </com.base.lib.autolayout.AutoFrameLayout>
+    <View
+        android:layout_width="436px"
+        android:layout_height="448px"
+        android:background="@drawable/bg_identity_face_1"
+        android:layout_centerInParent="true"/>
+    <View
+        android:layout_width="211px"
+        android:layout_height="30px"
+        android:background="@drawable/bg_recognition_ing"
+        android:layout_below="@id/face_recognition_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20px"/>
     <com.base.lib.autolayout.AutoRelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="28px"
+        android:layout_height="46px"
         android:layout_marginTop="30px"
         android:paddingLeft="30px"
         android:paddingRight="30px">
         <View
-            android:layout_width="777px"
-            android:layout_height="13px"
-            android:background="@drawable/top_line_image"
+            android:layout_width="210px"
+            android:layout_height="46px"
+            android:background="@drawable/recognition_left_top"
             android:layout_centerVertical="true"/>
         <View
             android:layout_width="125px"

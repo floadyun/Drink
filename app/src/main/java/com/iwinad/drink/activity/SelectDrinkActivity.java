@@ -2,6 +2,7 @@ package com.iwinad.drink.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,6 +22,7 @@ import com.iwinad.drink.seriaport.DataSerialPort;
 import com.iwinad.drink.seriaport.ICommonResult;
 import com.iwinad.drink.seriaport.MixDrinkInfo;
 import com.iwinad.drink.seriaport.SerialPortResponse;
+import com.iwinad.drink.widget.ScaleImageView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,18 +38,11 @@ import butterknife.ButterKnife;
  */
 public class SelectDrinkActivity extends AppBaseActivity {
 
-    @BindView(R.id.select_drink_view)
-    DiscreteScrollView scrollView;
-
     private DataSerialPort dataSerialPort = new DataSerialPort();
-
-    private BaseQuickAdapter quickAdapter;
-
-    private Integer[] imageIds = new Integer[]{R.drawable.drink_green,R.drawable.drink_smile,R.drawable.drink_russia};
 
     private boolean isDrinking;
 
-    private int selectPosition;
+    private Handler mHandler;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,56 +50,24 @@ public class SelectDrinkActivity extends AppBaseActivity {
         setContentView(R.layout.activity_select_drink);
         ButterKnife.bind(this);
 
-       // dataSerialPort.init();
+     //   dataSerialPort.init();
 
-        initScrollView();
-    }
-    private void initScrollView(){
-        quickAdapter = new BaseQuickAdapter<Integer, BaseViewHolder>(R.layout.item_select_drink){
-            @Override
-            protected void convert(BaseViewHolder helper,Integer item, int position) {
-                helper.setImageResource(R.id.item_drink_image,item);
-            }
-        };
-        scrollView.setItemTransformer(new ScaleTransformer.Builder()
-                .setMaxScale(1.09f)
-                .setMinScale(0.75f)
-                .setPivotX(Pivot.X.CENTER) //CENTER is a default one
-                .setPivotY(Pivot.Y.CENTER) //CENTER is a default one
-                .build());
-        scrollView.addOnItemChangedListener(new DiscreteScrollView.OnItemChangedListener<RecyclerView.ViewHolder>() {
-            @Override
-            public void onCurrentItemChanged(@Nullable RecyclerView.ViewHolder viewHolder, int adapterPosition) {
-                selectPosition = adapterPosition;
-            }
-        });
-        quickAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if(!isDrinking&&position==selectPosition){
-                    startDrink(position);
-                    gotoFaceRecognition();
-                }
-            }
-        });
-        quickAdapter.setNewData(Arrays.asList(imageIds));
-        scrollView.setAdapter(quickAdapter);
-        scrollView.smoothScrollToPosition(1);
+        mHandler = new Handler();
     }
     private void startDrink(int type){
         MixDrinkInfo mixDrinkInfo = new MixDrinkInfo();
         switch(type){
-            case 0:   // 绿眼
+            case 1:   // 绿眼
                 mixDrinkInfo.type = 0;
                 mixDrinkInfo.bottles = new int[]{11,10,12};
                 mixDrinkInfo.formulaCapacitys = new int[]{15,35,20};
                 break;
-            case 1:   // 微笑
+            case 2:   // 微笑
                 mixDrinkInfo.type = 0;
                 mixDrinkInfo.bottles = new int[]{3,14,6};
                 mixDrinkInfo.formulaCapacitys = new int[]{10,20,30};
                 break;
-            case 2:   // 俄罗斯范儿
+            case 3:   // 俄罗斯范儿
                 mixDrinkInfo.type = 1;
                 mixDrinkInfo.bottles = new int[]{3,11,12};
                 mixDrinkInfo.formulaCapacitys = new int[]{20,20,30};
@@ -148,9 +111,19 @@ public class SelectDrinkActivity extends AppBaseActivity {
     /**
      * 跳转至人脸识别
      */
-    private void gotoFaceRecognition(){
-        Intent intent = new Intent(this,FaceRecognitionActivity.class);
-        intent.putExtra(Consts.FACE_TYPE,1);
-        startActivity(intent);
+    public void gotoFaceRecognition(View view){
+        if(isDrinking)return;
+        isDrinking = true;
+        startDrink(Integer.valueOf(view.getTag().toString()));
+        ((ScaleImageView)view).isPressed = true;
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(SelectDrinkActivity.this,FaceRecognitionActivity.class);
+                intent.putExtra(Consts.FACE_TYPE,1);
+                startActivity(intent);
+                ((ScaleImageView)view).isPressed = false;
+            }
+        },1000);
     }
 }

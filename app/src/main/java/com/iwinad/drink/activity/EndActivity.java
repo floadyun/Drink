@@ -45,6 +45,7 @@ public class EndActivity extends AppBaseActivity {
             public void run() {
                 AppManager.getInstance().killActivity(IdentifyMoodActivity.class);
                 AppManager.getInstance().killActivity(SelectDrinkActivity.class);
+                AppManager.getInstance().killActivity(FacePayActivity.class);
                 finishSelf();
             }
         };
