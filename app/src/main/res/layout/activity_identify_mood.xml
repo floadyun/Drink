@@ -6,8 +6,8 @@
     <com.base.lib.autolayout.AutoFrameLayout
         android:layout_width="344px"
         android:layout_height="439px"
-        android:layout_marginLeft="105px"
-        android:layout_marginTop="115px">
+        android:layout_marginLeft="85px"
+        android:layout_marginTop="95px">
         <!--相机预览界面，必须设置-->
         <com.vise.face.CameraPreview
             android:id="@+id/face_detector_preview"
@@ -40,7 +40,7 @@
         android:layout_height="389px"
         android:layout_alignParentRight="true"
         android:layout_marginRight="100px"
-        android:layout_marginTop="135px"
+        android:layout_marginTop="115px"
         android:background="@drawable/bg_expression_list"/>
     <View
         android:layout_width="111px"

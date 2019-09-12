@@ -4,18 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
-
-import com.base.lib.baseadapter.BaseQuickAdapter;
-import com.base.lib.baseadapter.BaseViewHolder;
 import com.base.lib.baseui.AppBaseActivity;
-import com.base.lib.discretescrollview.DiscreteScrollView;
-import com.base.lib.discretescrollview.InfiniteScrollAdapter;
-import com.base.lib.discretescrollview.transform.Pivot;
-import com.base.lib.discretescrollview.transform.ScaleTransformer;
 import com.iwinad.drink.Consts;
 import com.iwinad.drink.R;
 import com.iwinad.drink.seriaport.DataSerialPort;
@@ -23,13 +14,8 @@ import com.iwinad.drink.seriaport.ICommonResult;
 import com.iwinad.drink.seriaport.MixDrinkInfo;
 import com.iwinad.drink.seriaport.SerialPortResponse;
 import com.iwinad.drink.widget.ScaleImageView;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * @copyright : 深圳市喜投金融服务有限公司
@@ -49,9 +35,11 @@ public class SelectDrinkActivity extends AppBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_drink);
         ButterKnife.bind(this);
+        try {
+            dataSerialPort.init();
+        }catch (Exception e){
 
-     //   dataSerialPort.init();
-
+        }
         mHandler = new Handler();
     }
     private void startDrink(int type){
@@ -111,6 +99,7 @@ public class SelectDrinkActivity extends AppBaseActivity {
     /**
      * 跳转至人脸识别
      */
+    @OnClick({R.id.item_drink_green,R.id.item_drink_smile,R.id.item_drink_russia})
     public void gotoFaceRecognition(View view){
         if(isDrinking)return;
         isDrinking = true;

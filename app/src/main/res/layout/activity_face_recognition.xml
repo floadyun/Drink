@@ -17,14 +17,14 @@
         android:background="@drawable/face_recognition_left"/>
     <com.base.lib.autolayout.AutoFrameLayout
         android:id="@+id/face_recognition_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="344px"
+        android:layout_height="439px"
         android:layout_centerInParent="true">
         <!--相机预览界面，必须设置-->
         <com.vise.face.CameraPreview
             android:id="@+id/face_detector_preview"
-            android:layout_width="300px"
-            android:layout_height="400px"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
     </com.base.lib.autolayout.AutoFrameLayout>
     <View
         android:layout_width="436px"

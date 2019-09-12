@@ -50,29 +50,10 @@ public class FaceRecognitionActivity extends AppBaseActivity {
 
     private int faceType;
 
-    private ICameraCheckListener mCameraCheckListener = new ICameraCheckListener() {
-        @Override
-        public void checkPermission(boolean isAllow) {
-            ViseLog.i("checkPermission" + isAllow);
-            if (!isAllow) {
-                Toast.makeText(FaceRecognitionActivity.this, "权限申请被拒绝，请进入设置打开权限再试！", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        }
-        @Override
-        public void checkPixels(long pixels, boolean isSupport) {
-            if (!isSupport) {
-                Toast.makeText(FaceRecognitionActivity.this, "手机相机像素达不到要求！", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        }
-    };
-
     private IDataListener mDataListener = new IDataListener() {
         @Override
         public void onDetectorData(DetectorData detectorData) {
             mDetectorData = detectorData;
-            ViseLog.d("mDetectorData="+mDetectorData.getFacesCount());
             if(mDetectorData.getFacesCount()>=1){
                 try {
                     takePicture();
@@ -88,8 +69,6 @@ public class FaceRecognitionActivity extends AppBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_face_recognition);
         ButterKnife.bind(this);
-//        mFace_detector_face.setZOrderOnTop(true);
-//        mFace_detector_face.getHolder().setFormat(PixelFormat.TRANSLUCENT);
         initFaceDetector();
         mHandler = new Handler();
         faceType = getIntent().getIntExtra(Consts.FACE_TYPE,0);
@@ -98,7 +77,6 @@ public class FaceRecognitionActivity extends AppBaseActivity {
         //创建代理类，必须传入相机预览界面
         mDetectorProxy = new DetectorProxy.Builder(mFace_detector_preview)
                 .setMinCameraPixels(3000000)
-                .setCheckListener(mCameraCheckListener)
                 .setDataListener(mDataListener)
                 //设置预览相机的相机ID
                 .setCameraId(Camera.CameraInfo.CAMERA_FACING_FRONT)
