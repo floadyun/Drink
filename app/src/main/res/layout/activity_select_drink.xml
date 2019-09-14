@@ -20,45 +20,25 @@
             android:layout_alignParentRight="true"/>
     </com.base.lib.autolayout.AutoRelativeLayout>
     <View
-        android:layout_width="167px"
-        android:layout_height="35px"
+        android:layout_width="333px"
+        android:layout_height="169px"
+        android:background="@drawable/select_drink_top"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="85px"
-        android:background="@drawable/bg_mood_text"/>
-    <com.base.lib.autolayout.AutoRelativeLayout
-        android:layout_width="990px"
-        android:layout_height="500px"
-        android:layout_centerInParent="true">
-        <com.iwinad.drink.widget.ScaleImageView
-            android:id="@+id/item_drink_green"
-            android:layout_width="326px"
-            android:layout_height="359px"
-            android:src="@drawable/drink_green"
-            android:background="@drawable/item_drink_selector"
-            android:layout_margin="30dp"
-            android:tag="1"
-            android:layout_centerVertical="true"
-            android:padding="30px" />
-        <com.iwinad.drink.widget.ScaleImageView
-            android:id="@+id/item_drink_smile"
-            android:layout_width="326px"
-            android:layout_height="359px"
-            android:src="@drawable/drink_smile"
-            android:background="@drawable/item_drink_selector"
-            android:layout_margin="30dp"
-            android:tag="2"
-            android:layout_centerInParent="true"
-            android:padding="30px" />
-        <com.iwinad.drink.widget.ScaleImageView
-            android:id="@+id/item_drink_russia"
-            android:layout_width="326px"
-            android:layout_height="359px"
-            android:src="@drawable/drink_russia"
-            android:background="@drawable/item_drink_selector"
-            android:layout_margin="30dp"
-            android:tag="3"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:padding="30px" />
-    </com.base.lib.autolayout.AutoRelativeLayout>
+        android:layout_marginTop="20px"/>
+    <View
+        android:id="@+id/drink_mood_image"
+        android:layout_width="380px"
+        android:layout_height="32px"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="65px"
+        android:background="@drawable/bg_drink_title_1"/>
+    <com.iwinad.drink.widget.ScaleImageView
+        android:id="@+id/select_drink_image"
+        android:layout_width="326px"
+        android:layout_height="349px"
+        android:src="@drawable/drink_green"
+        android:layout_centerInParent="true"
+        android:onClick="gotoFaceRecognition"
+        android:background="@drawable/item_drink_selector"
+        android:padding="20px" />
 </com.base.lib.autolayout.AutoRelativeLayout>

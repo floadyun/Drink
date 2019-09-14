@@ -10,7 +10,7 @@
     <com.base.lib.autolayout.AutoRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="28px"
-        android:layout_marginTop="30px"
+        android:layout_marginTop="20px"
         android:paddingLeft="30px"
         android:paddingRight="30px">
         <View
@@ -25,14 +25,22 @@
             android:layout_alignParentRight="true"/>
     </com.base.lib.autolayout.AutoRelativeLayout>
     <View
+        android:layout_width="192px"
+        android:layout_height="32px"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="55px"
+        android:background="@drawable/bg_main_title"/>
+    <View
         android:layout_width="605px"
         android:layout_height="483px"
-        android:layout_centerInParent="true"
-        android:background="@drawable/bg_5g"/>
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bg_5g"
+        android:layout_marginTop="85px"/>
     <com.base.lib.autolayout.AutoRelativeLayout
         android:layout_width="440px"
         android:layout_height="440px"
-        android:layout_centerInParent="true">
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="95px">
         <View
             android:layout_width="82px"
             android:layout_height="93px"

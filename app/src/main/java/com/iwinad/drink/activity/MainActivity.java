@@ -71,7 +71,6 @@ public class MainActivity extends AppBaseActivity {
     }
     private void startViewAnimation(int viewId){
         View animView = findViewById(viewId);
-        AnimatorSet animatorSet = new AnimatorSet();
         ObjectAnimator scaleX = ObjectAnimator.ofFloat(animView,"ScaleX", 0.9f);
         scaleX.setDuration(1000);
         scaleX.addListener(new AnimatorListenerAdapter() {

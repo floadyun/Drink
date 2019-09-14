@@ -55,4 +55,10 @@
             android:background="@drawable/ic_huawei_logo"
             android:layout_alignParentRight="true"/>
     </com.base.lib.autolayout.AutoRelativeLayout>
+    <View
+        android:layout_width="282px"
+        android:layout_height="32px"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15px"
+        android:background="@drawable/bg_recognition_title"/>
 </com.base.lib.autolayout.AutoRelativeLayout>

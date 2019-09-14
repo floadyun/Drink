@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+
 import com.base.lib.baseui.AppBaseActivity;
 import com.iwinad.drink.Consts;
 import com.iwinad.drink.R;
@@ -14,6 +16,8 @@ import com.iwinad.drink.seriaport.ICommonResult;
 import com.iwinad.drink.seriaport.MixDrinkInfo;
 import com.iwinad.drink.seriaport.SerialPortResponse;
 import com.iwinad.drink.widget.ScaleImageView;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -24,11 +28,22 @@ import butterknife.OnClick;
  */
 public class SelectDrinkActivity extends AppBaseActivity {
 
+    @BindView(R.id.drink_mood_image)
+    View moodImage;
+    @BindView(R.id.select_drink_image)
+    ScaleImageView drinkImage;
+
     private DataSerialPort dataSerialPort = new DataSerialPort();
 
     private boolean isDrinking;
 
     private Handler mHandler;
+
+    private int[] moods = new int[]{R.drawable.bg_drink_title_1,R.drawable.bg_drink_title_2,R.drawable.bg_drink_title_3};
+
+    private int[] drinks = new int[]{R.drawable.drink_green,R.drawable.drink_smile,R.drawable.drink_russia};
+
+    private int type;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,21 +56,28 @@ public class SelectDrinkActivity extends AppBaseActivity {
 
         }
         mHandler = new Handler();
+
+        initView();
+    }
+    private void initView(){
+        type = (int) (Math.random()*3);
+        moodImage.setBackgroundResource(moods[type]);
+        drinkImage.setImageResource(drinks[type]);
     }
     private void startDrink(int type){
         MixDrinkInfo mixDrinkInfo = new MixDrinkInfo();
         switch(type){
-            case 1:   // 绿眼
+            case 0:   // 绿眼
                 mixDrinkInfo.type = 0;
                 mixDrinkInfo.bottles = new int[]{11,10,12};
                 mixDrinkInfo.formulaCapacitys = new int[]{15,35,20};
                 break;
-            case 2:   // 微笑
+            case 1:   // 微笑
                 mixDrinkInfo.type = 0;
                 mixDrinkInfo.bottles = new int[]{3,14,6};
                 mixDrinkInfo.formulaCapacitys = new int[]{10,20,30};
                 break;
-            case 3:   // 俄罗斯范儿
+            case 2:   // 俄罗斯范儿
                 mixDrinkInfo.type = 1;
                 mixDrinkInfo.bottles = new int[]{3,11,12};
                 mixDrinkInfo.formulaCapacitys = new int[]{20,20,30};
@@ -99,19 +121,18 @@ public class SelectDrinkActivity extends AppBaseActivity {
     /**
      * 跳转至人脸识别
      */
-    @OnClick({R.id.item_drink_green,R.id.item_drink_smile,R.id.item_drink_russia})
     public void gotoFaceRecognition(View view){
         if(isDrinking)return;
         isDrinking = true;
-        startDrink(Integer.valueOf(view.getTag().toString()));
-        ((ScaleImageView)view).isPressed = true;
+        startDrink(type);
+        drinkImage.isPressed = true;
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 Intent intent = new Intent(SelectDrinkActivity.this,FaceRecognitionActivity.class);
                 intent.putExtra(Consts.FACE_TYPE,1);
                 startActivity(intent);
-                ((ScaleImageView)view).isPressed = false;
+                drinkImage.isPressed = false;
             }
         },1000);
     }

@@ -21,7 +21,7 @@
     <com.base.lib.autolayout.AutoRelativeLayout
     android:layout_width="match_parent"
     android:layout_height="28px"
-    android:layout_marginTop="30px"
+    android:layout_marginTop="20px"
     android:paddingLeft="30px"
     android:paddingRight="30px">
     <View
@@ -35,6 +35,12 @@
         android:background="@drawable/ic_huawei_logo"
         android:layout_alignParentRight="true"/>
 </com.base.lib.autolayout.AutoRelativeLayout>
+    <View
+        android:layout_width="402px"
+        android:layout_height="32px"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45px"
+        android:background="@drawable/bg_mood_title"/>
     <View
         android:layout_width="465px"
         android:layout_height="389px"

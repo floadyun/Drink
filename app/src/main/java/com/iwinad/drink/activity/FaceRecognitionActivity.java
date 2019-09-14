@@ -95,7 +95,6 @@ public class FaceRecognitionActivity extends AppBaseActivity {
                 String avatorPath = SaveUtil.saveImage(FaceRecognitionActivity.this,mFace_detector_preview,mDetectorData,bytes);
                 if(!TextUtils.isEmpty(avatorPath)){
                     gotoPayResult(avatorPath);
-                    finish();
                 }
             }
         });
