@@ -50,11 +50,13 @@ public class FaceRecognitionActivity extends AppBaseActivity {
 
     private int faceType;
 
+    private int delayTime = 0;
+
     private IDataListener mDataListener = new IDataListener() {
         @Override
         public void onDetectorData(DetectorData detectorData) {
             mDetectorData = detectorData;
-            if(mDetectorData.getFacesCount()>=1){
+            if(mDetectorData.getFacesCount()>=1&&delayTime==5){
                 try {
                     takePicture();
                 }catch (Exception e){
@@ -72,6 +74,12 @@ public class FaceRecognitionActivity extends AppBaseActivity {
         initFaceDetector();
         mHandler = new Handler();
         faceType = getIntent().getIntExtra(Consts.FACE_TYPE,0);
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {//延迟5秒识别
+                delayTime = 5;
+            }
+        },5000);
     }
     private void initFaceDetector(){
         //创建代理类，必须传入相机预览界面
