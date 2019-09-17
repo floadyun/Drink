@@ -50,7 +50,7 @@ public class EndActivity extends AppBaseActivity {
                 finishSelf();
             }
         };
-        mHandler.postDelayed(runnable,5000);
+        mHandler.postDelayed(runnable,70*1000);
         for (int i=0;i<viewIds.length;i++){
             startViewAnimation(viewIds[i]);
         }

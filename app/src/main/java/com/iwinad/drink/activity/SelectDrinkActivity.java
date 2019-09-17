@@ -63,7 +63,7 @@ public class SelectDrinkActivity extends AppBaseActivity {
         type = (int) (Math.random()*3);
         moodImage.setBackgroundResource(moods[type]);
         drinkImage.setImageResource(drinks[type]);
-        moodImage.setOnClickListener(new View.OnClickListener() {
+        drinkImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 gotoFaceRecognition();
@@ -76,17 +76,17 @@ public class SelectDrinkActivity extends AppBaseActivity {
             case 0:   // 绿眼
                 mixDrinkInfo.type = 0;
                 mixDrinkInfo.bottles = new int[]{11,10,12};
-                mixDrinkInfo.formulaCapacitys = new int[]{15,35,20};
+                mixDrinkInfo.formulaCapacitys = new int[]{10,10,10};
                 break;
             case 1:   // 微笑
                 mixDrinkInfo.type = 0;
                 mixDrinkInfo.bottles = new int[]{3,14,6};
-                mixDrinkInfo.formulaCapacitys = new int[]{10,20,30};
+                mixDrinkInfo.formulaCapacitys = new int[]{10,10,10};
                 break;
             case 2:   // 俄罗斯范儿
                 mixDrinkInfo.type = 1;
                 mixDrinkInfo.bottles = new int[]{3,11,12};
-                mixDrinkInfo.formulaCapacitys = new int[]{20,20,30};
+                mixDrinkInfo.formulaCapacitys = new int[]{10,10,10};
                 break;
         }
         int capacity = 0;
@@ -135,8 +135,10 @@ public class SelectDrinkActivity extends AppBaseActivity {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(SelectDrinkActivity.this,FaceRecognitionActivity.class);
-                intent.putExtra(Consts.FACE_TYPE,1);
+//                Intent intent = new Intent(SelectDrinkActivity.this,FaceRecognitionActivity.class);
+//                intent.putExtra(Consts.FACE_TYPE,1);
+//                startActivity(intent);
+                Intent intent = new Intent(SelectDrinkActivity.this,EndActivity.class);
                 startActivity(intent);
                 drinkImage.isPressed = false;
             }

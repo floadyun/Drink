@@ -68,6 +68,8 @@ public class IdentifyMoodActivity extends AppBaseActivity {
             @Override
             public void run() {//延迟5秒识别
                 delayTime = 5;
+                gotoSelectDrink();
+                finish();
             }
         },5000);
         GlideManage.getInstance().withGif(this,R.drawable.bg_expression_list,moodImage);
@@ -76,7 +78,7 @@ public class IdentifyMoodActivity extends AppBaseActivity {
         //创建代理类，必须传入相机预览界面
         mDetectorProxy = new DetectorProxy.Builder(mFace_detector_preview)
                 .setMinCameraPixels(3000000)
-                .setDataListener(mDataListener)
+            //    .setDataListener(mDataListener)
                 //设置预览相机的相机ID
                 .setCameraId(Camera.CameraInfo.CAMERA_FACING_FRONT)
                 .build();
