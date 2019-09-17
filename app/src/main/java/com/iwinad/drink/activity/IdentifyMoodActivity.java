@@ -10,8 +10,10 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 import com.base.lib.baseui.AppBaseActivity;
+import com.base.lib.glide.GlideManage;
 import com.iwinad.drink.Consts;
 import com.iwinad.drink.util.SaveUtil;
 import com.vise.face.CameraPreview;
@@ -37,8 +39,9 @@ import butterknife.ButterKnife;
 public class IdentifyMoodActivity extends AppBaseActivity {
     @BindView(R.id.face_detector_preview)
     CameraPreview mFace_detector_preview;
+    @BindView(R.id.identity_mood_image)
+    ImageView moodImage;
     private DetectorProxy mDetectorProxy;
-
     private int delayTime = 0;
 
     private IDataListener mDataListener = new IDataListener() {
@@ -67,6 +70,7 @@ public class IdentifyMoodActivity extends AppBaseActivity {
                 delayTime = 5;
             }
         },5000);
+        GlideManage.getInstance().withGif(this,R.drawable.bg_expression_list,moodImage);
     }
     private void initFaceDetector(){
         //创建代理类，必须传入相机预览界面

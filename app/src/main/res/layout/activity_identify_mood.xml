@@ -41,13 +41,13 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="45px"
         android:background="@drawable/bg_mood_title"/>
-    <View
+    <ImageView
+        android:id="@+id/identity_mood_image"
         android:layout_width="465px"
         android:layout_height="389px"
         android:layout_alignParentRight="true"
         android:layout_marginRight="100px"
-        android:layout_marginTop="115px"
-        android:background="@drawable/bg_expression_list"/>
+        android:layout_marginTop="115px"/>
     <View
         android:layout_width="111px"
         android:layout_height="97px"
