@@ -63,4 +63,10 @@
         android:layout_marginBottom="30px"
         android:layout_marginRight="30px"
         android:background="@drawable/ic_right_bottom"/>
+    <View
+        android:layout_width="238px"
+        android:layout_height="32px"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="55px"
+        android:background="@drawable/end_page_title"/>
 </com.base.lib.autolayout.AutoRelativeLayout>
