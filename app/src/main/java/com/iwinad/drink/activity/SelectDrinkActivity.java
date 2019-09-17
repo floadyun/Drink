@@ -63,6 +63,12 @@ public class SelectDrinkActivity extends AppBaseActivity {
         type = (int) (Math.random()*3);
         moodImage.setBackgroundResource(moods[type]);
         drinkImage.setImageResource(drinks[type]);
+        moodImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gotoFaceRecognition();
+            }
+        });
     }
     private void startDrink(int type){
         MixDrinkInfo mixDrinkInfo = new MixDrinkInfo();
@@ -121,7 +127,7 @@ public class SelectDrinkActivity extends AppBaseActivity {
     /**
      * 跳转至人脸识别
      */
-    public void gotoFaceRecognition(View view){
+    public void gotoFaceRecognition(){
         if(isDrinking)return;
         isDrinking = true;
         startDrink(type);

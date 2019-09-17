@@ -38,7 +38,6 @@
         android:layout_height="349px"
         android:src="@drawable/drink_green"
         android:layout_centerInParent="true"
-        android:onClick="gotoFaceRecognition"
         android:background="@drawable/item_drink_selector"
         android:padding="20px" />
 </com.base.lib.autolayout.AutoRelativeLayout>
